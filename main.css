@@ -335,10 +335,10 @@ input[type=radio]:checked + label:before
   border-color: black;
   border-radius: 10px;
   background-color: rgba(222, 214, 38, 0.75);
-  position:fixed;
+  position:absolute;
   z-index: 3;
   padding: 20px;
-  filter: blur(5px);
+ 
 }
 .popover ul
 {
@@ -362,6 +362,40 @@ input[type=radio]:checked + label:before
 #edit_messages li
 {
   border-radius: 0.3em;
+}
+
+.blur
+{
+  -moz-filter:blur(5px);
+  -ms-filter:blur(5px);
+  -o-filter:blur(5px);
+  -webkit-filter: blur(5px);
+  filter: blur(5px);
+  filter:url(#blur5);
+  filter:progid:DXImageTransform.Microsoft.Blur(PixelRadius='5');
+}
+
+.grayout
+{
+  background: #888;
+  
+          filter:grayscale(50%);
+  -webkit-filter:grayscale(50%);
+      -ms-filter:grayscale(50%);
+     -moz-filter:grayscale(50%);
+       -o-filter:grayscale(50%);
+       filter:url(#grayscale);
+       filter:gray;
+}
+.sepia
+{
+  background-color:#94725b;
+          filter:sepia(100%);
+  -webkit-filter:sepia(100%);
+     -moz-filter:sepia(100%);
+      -ms-filter:sepia(100%);
+       -o-filter:sepia(100%);
+
 }
 
 hr
@@ -610,4 +644,6 @@ input.fixed
   }
 }
 
-   
+
+
+
