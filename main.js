@@ -90,6 +90,7 @@
   }
 
   function showPopOver( surveyNumber ) {
+    popClearErrorMessages();
     loadScreen();
 
     var e = window.event;
@@ -120,7 +121,7 @@
     // Focus the instructor name text input
     document.getElementById( "edit_instructor" ).focus();
     document.getElementById( "edit_instructor" ).value = document.getElementById( "instructor_" + surveyNumber ).innerText;
-    document.getElementById( "edit_instructor" ).addEventListener( 'keydown', inputAlpha );
+    document.getElementById( "edit_instructor" ).addEventListener( 'keypress', inputAlpha );
     document.getElementById( "edit_instructor" ).addEventListener( 'blur', function() {
       // Needs to evaluate at call time
       return validateName( document.getElementById( "edit_instructor" ).value );
@@ -145,22 +146,33 @@
 
     // Add "Save Changes" and "Cancel" handlers 
     document.getElementById( "edit_save_changes" ).addEventListener( 'mousedown',
-        // This prevents the blur event on the name input field if 'save changes' is clicked
-        function( e ) {
-          e = e || window.event;
-          if ( e.preventDefault ) e.preventDefault();
-          return false;
-        } );
+      // This prevents the blur event on the name input field if 'save changes' is clicked
+      function( e ) {
+        e = e || window.event;
+        if ( e.preventDefault ) e.preventDefault();
+        return false;
+      } );
     document.getElementById( "edit_save_changes" ).addEventListener( 'click', saveEditCourse.bind( null, surveyNumber, sel_ranks, sel_types ) );
+    document.getElementById( "edit_cancel" ).addEventListener( 'mousedown',
+      // This prevents the blur event on the name input field if 'cancel' is clicked
+      function( e ) {
+        e = e || window.event;
+        if ( e.preventDefault ) e.preventDefault();
+        return false;
+      } );
     document.getElementById( "edit_cancel" ).addEventListener( 'click', hidePopOver );
     document.addEventListener( 'keyup', function escClosePopOver( e ) {
       // Inline handler to capture 'ESC' key to close popover
       e = e || window.event;
       var key = e.keyCode || e.which;
       if ( key === 27 ) { // Close popover on 'ESC' key
+        e.stopImmediatePropagation(); // Don't allow any more handlers, like onblur
         hidePopOver();
         document.removeEventListener( 'keyup', escClosePopOver );
-        document.getElementById( "editCourse_" + surveyNumber ).focus();
+        ////////////////////////////////////////////////////////////////////////////////
+        // This line causes a new Child to be added to the "#edit_messages" for unknown reasons.
+        //document.getElementById( "editCourse_" + surveyNumber ).focus();
+        ////////////////////////////////////////////////////////////////////////////////
         return;
       }
     } )
@@ -302,7 +314,7 @@
     name = name.replace( /,{2,}/, "," ).replace( /&{2,}/, "&" );
     var err_message = document.createElement( 'li' ); // Make an element to show the validation result(s).
     // Next check for basic errors that can be flagged here. e.g. Name begins with a comma or space
-    if ( name.match( /^[A-Z]{2,}([ ]?[,&\-]?[ ]?[A-Z]+)*$/ ) ) {
+    if ( name.match( /^[A-Z]{2,}(\s?[,&\-]?\s?[A-Z]+)*$/ ) ) {
       err_message.classList.add( 'valid' );
       err_message.innerText = "Instructor: Name is valid.";
       popAddErrorMessage( err_message );
