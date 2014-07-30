@@ -24,7 +24,7 @@
         </h1>
       </div>
       <div id="error_msg" class="noprint valid">
-        <h3>
+        <h3 id="error_text">
           <!--#4DTEXT vWEBErrMsg-->
         </h3>
       </div>

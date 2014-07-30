@@ -52,6 +52,18 @@
     }
   };
 
+  // Convert query object lists to arrays. (Mainly useful for 'forEach' property.)
+  window.$A = function( selector, all ) {
+    if ( all ) {
+      return Array.prototype.slice.call( $( selector, all ) );
+    } else {
+      return new Array().concat( $( selector, all ) );
+    }
+  }
+  
+  // Make a generic iterator from Array.forEach
+  var forEach = Array.prototype.forEach;
+
 
 
   ////////////////////////////////////////////////////////////////////////////////
@@ -124,7 +136,15 @@
     document.getElementById( "edit_instructor" ).addEventListener( 'keypress', inputAlpha );
     document.getElementById( "edit_instructor" ).addEventListener( 'blur', function() {
       // Needs to evaluate at call time
-      return validateName( document.getElementById( "edit_instructor" ).value );
+      // Update the field value with the validation result, if good
+      var isValidName = validateName( document.getElementById( "edit_instructor" ).value );
+      if ( isValidName ) {
+        document.getElementById( "edit_instructor" ).classList.remove( 'input_error' );
+        document.getElementById( "edit_instructor" ).value = isValidName;
+      } else {
+        document.getElementById( "edit_instructor" ).classList.add( 'input_error' );
+      }
+      return isValidName; // Either the (corrected) valid name, or false if not valid
     } );
     // Select the correct <option> for the Ranks <select> element, based on the course's existing value
     var sel_ranks = document.getElementById( "edit_rank" );
@@ -295,7 +315,7 @@
     key = String.fromCharCode( key );
 
     var functionalKeys = [ 8, 9, 16, 17, 18, 91, 46, 127, 37, 38, 39, 40, 27, 192 ] // Delete, backspace, arrows, TAB, ESC, etc.
-    var regex = /[A-Za-z\- ,&]/;
+    var regex = /[A-Za-z\- &]/;
 
     e.returnValue = regex.test( key ) || ( functionalKeys.indexOf( parseInt( e.keyCode ) ) >= 0 );
     if ( !e.returnValue && e.preventDefault ) e.preventDefault();
@@ -316,6 +336,7 @@
     // Next check for basic errors that can be flagged here. e.g. Name begins with a comma or space
     if ( name.match( /^[A-Z]{2,}(\s?[,&\-]?\s?[A-Z]+)*$/ ) ) {
       err_message.classList.add( 'valid' );
+      err_message.classList.add( 'fadeout' );
       err_message.innerText = "Instructor: Name is valid.";
       popAddErrorMessage( err_message );
 
@@ -462,6 +483,10 @@
       subdeptRadios[ i ].addEventListener( 'click', changeSubDepartment.bind( null, survey_number, subdept ) );
     }
   }
+
+  // Add fadeout for any '.valid' elements, once the page has loaded
+  forEach.call($('.valid', true ), function (node) { node.classList.add('fadeout');});
+
   console.timeStamp( "Finished." );
   console.groupEnd();
 

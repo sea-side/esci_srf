@@ -554,11 +554,7 @@ input.fixed
 
 .valid
 {
-  -moz-animation:fadeout 1s ease 2s 1 normal forwards;
-  -ms-animation:fadeout 1s ease 2s 1 normal forwards;
-  -o-animation:fadeout 1s ease 2s 1 normal forwards;
-  -webkit-animation:fadeout 1s ease 2s 1 normal forwards;
-  animation:fadeout 1s ease 2s 1 normal forwards;
+  opacity: 1;  
   background:#DFF2BF;
   color:#4F8A10;
   list-style:none;
@@ -597,6 +593,18 @@ input.fixed
 {
   content:'\24E7 ';
   padding-right:12px;
+}
+
+.input_error
+{
+  background-color: #FFBABA
+}
+
+.fadeout
+{
+  opacity: 0;  
+          transition: opacity 3s ease-in-out 2s;
+  -webkit-transition: opacity 3s ease-in-out 2s;
 }
 
 /*Compatibility for older broswers*/
