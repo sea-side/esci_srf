@@ -336,7 +336,9 @@
     // Next check for basic errors that can be flagged here. e.g. Name begins with a comma or space
     if ( name.match( /^[A-Z]{2,}(\s?[,&\-]?\s?[A-Z]+)*$/ ) ) {
       err_message.classList.add( 'valid' );
+      err_message.style.opacity = 1;
       err_message.classList.add( 'fadeout' );
+      err_message.removeAttribute('style');
       err_message.innerText = "Instructor: Name is valid.";
       popAddErrorMessage( err_message );
 
@@ -452,10 +454,10 @@
     document.getElementById( "error_msg" ).style.display = "none";
   } // Else hide the other elements
   else {
-    document.getElementById( "error_msg" ).style.display = "block";
-    document.getElementById( "heading" ).style.display = "none";
-    document.getElementById( "intro" ).style.display = "none";
-    document.getElementById( "list" ).style.display = "none";
+    if(document.getElementById( "error_msg" )) document.getElementById( "error_msg" ).style.display = "block";
+    if(document.getElementById( "heading" )) document.getElementById( "heading" ).style.display = "none";
+    if(document.getElementById( "intro" )) document.getElementById( "intro" ).style.display = "none";
+    if(document.getElementById( "list" )) document.getElementById( "list" ).style.display = "none";
   }
 
   // Does the main form exist?
