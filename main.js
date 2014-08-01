@@ -338,9 +338,9 @@
       err_message.classList.add( 'valid' );
       err_message.style.opacity = 1;
       err_message.classList.add( 'fadeout' );
-      err_message.removeAttribute('style');
       err_message.innerText = "Instructor: Name is valid.";
       popAddErrorMessage( err_message );
+      err_message.removeAttribute('style');
 
       return name;
     } else {
