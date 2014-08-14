@@ -8,7 +8,8 @@
   <title>ESCI Survey Request Form List</title>
   <meta name="description" content="ESCI Suervey Request Form List">
   <meta name="author" content="Instructional Development, UCSB">
-  <link rel="stylesheet" href="./styles/main.css"><!--[if lt IE 9]>
+  <link rel="stylesheet" href="./styles/main.css">
+   <!--[if lt IE 9]>
       <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 </head>
@@ -59,10 +60,11 @@
 
     <div id="list">
       <form id="srf" name="srf" action="http://db01.id.ucsb.edu:8019/4DACTION/WEB_SetSurveyRequestData/<!--#4DTEXT vDepartment-->" method="post" accept-charset="utf-8">
-        <p>
-          <input id="srf_submit" type="submit" value="Submit Changes">          
-        </p>
-        <!--#4DHTML bl_SurveyRequestForm -->
+         <input id="srf_submit" type="submit" value="Submit Changes">
+         <form id="save_add_courses" name="save_add_courses" action="4DACTION/WEB_SRF_AddCourses/<!--#4DTEXT vDepartment-->" method="post" accept-charset="utf-8">
+          <input id="add_submit" type="submit" value="Add Additional ESCI Surveys..."/>
+         </form>
+          <!--#4DHTML bl_SurveyRequestForm -->
       </form>
     </div>
   </div>
