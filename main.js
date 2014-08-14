@@ -212,12 +212,9 @@
     // These 4 listeners are OK to remain through the life of the page. Multiple addEventListeners() should not be a problem
     input_instructor.addEventListener( 'keypress', inputAlpha );
     
-    // Save a particular bopund instance so it can be removed by name later on saving changes
-    var setInputBound = setInput.bind(input_instructor);
-    
-    input_instructor.addEventListener( 'blur', setInputBound, false );
-    input_instructor.addEventListener( 'change', setInputBound, false );
-    input_instructor.addEventListener( 'input', setInputBound, false );
+    input_instructor.addEventListener( 'blur', setInput, false );
+    input_instructor.addEventListener( 'change', setInput, false );
+    input_instructor.addEventListener( 'input', setInput, false );
     ////////////////////////////////////////////////////////////////////////////////
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -226,18 +223,15 @@
     // function with the necessary params, and then unbinds itself.        
     var saveCourseBound = function ( e ) {
       e = e || window.event;
-      saveEditCourse( surveyNumber, sel_ranks, sel_types, e );
-      this.removeEventListener( e.type, saveCourseBound, false );
+      if (e.type === 'keypress' && e.keyCode === 13) { // This should be the 'Enter' key on the text field (Instructor Name)
+          saveEditCourse( surveyNumber, sel_ranks, sel_types, e );
+          this.removeEventListener( e.type, saveCourseBound, false );
+      }
       return;
     };
     
     dgi( "edit_save_changes" ).addEventListener( 'click', saveCourseBound, false );
-    input_instructor.addEventListener( 'keypress', function( e ) {
-      e = e || window.event;
-      if ( e.keyCode === 13 ) { // 'Enter'
-        saveEditCourse( surveyNumber, sel_ranks, sel_types, e );
-      }
-    } );
+    input_instructor.addEventListener( 'keypress',saveCourseBound, false);
     ////////////////////////////////////////////////////////////////////////////////
 
 
@@ -376,10 +370,10 @@
     // Unset the event listeners for the text field
     var input_instructor = dgi( "edit_instructor" );
     input_instructor.removeEventListener( 'blur', setInput );
-    input_instructor.removeEventListener( 'change', setInput );
-    input_instructor.removeEventListener( 'paste', setInput );
+    input_instructor.removeEventListener( 'change', setInput );    
     input_instructor.removeEventListener( 'input', setInput );
 
+    //dgi("edit_save_course").removeEventListener()
     // Clear any existing messages
     popClearErrorMessages();
     dgi( "edit_instructor" ).classList.remove( 'input_error' );
@@ -617,4 +611,4 @@
   //   console.profileEnd();
   //   console.groupEnd();
 } )( window, document );
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+
