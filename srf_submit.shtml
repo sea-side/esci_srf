@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta name="generator" content=
-    "HTML Tidy for HTML5 (experimental) for Mac OS X https://github.com/w3c/tidy-html5/tree/c63cc39">
     <meta charset="utf-8">
     <base href="http://db01.id.ucsb.edu:8019/survey_request/">
     <title>
@@ -20,7 +18,7 @@
     <div id="content">
       <div id="heading">
         <h1 class="testing noprint">
-          TESTING SITE
+          TESTING SITE SUBMISSION PAGE
         </h1>
       </div>
       <div id="error_msg" class="noprint valid">

@@ -11,17 +11,33 @@
   <link rel="stylesheet" href="./styles/main.css"><!--[if lt IE 9]>
       <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-  <svg version="1.1" xmlns="http://www.w3.org/2000/svg" hidden>
-   <filter id="blur5">
-       <feGaussianBlur stdDeviation="5" />
-   </filter>
-   <filter id="grayscale">
-    <feColorMatrix type="matrix" values="0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0"/>
-   </filter>
-  </svg> 
 </head>
 
 <body>
+ <svg hidden xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" viewBox="0 0 2000 2000" height="100%" width="100%">
+  <defs>
+   <filter id="greenMatrix">
+    <fecolormatrix type="matrix" in="SourceGraphic"
+                   values="0 0 0 0 0
+                           1 1 1 1 0
+                           0 0 0 0 0
+                           0 0 0 1 0" ></fecolormatrix>
+   </filter>
+   <filter id="desaturate">
+    <fecolormatrix values="0.1" type="saturate" in="SourceGraphic"></fecolormatrix>
+   </filter>
+   <filter id="hue180">
+    <fecolormatrix values="180" type="hueRotate" in="SourceGraphic"></fecolormatrix>
+   </filter>
+   <filter id="lumo">
+    <fecolormatrix type="luminanceToAlpha" in="SourceGraphic"></fecolormatrix>
+   </filter>
+   <filter id="blur1">
+    <feGaussianBlur stdDeviation='1' in="SourceGraphic"></feGaussianBlur>
+   </filter>
+  </defs>
+ </svg>  
+
   <div id="content">
     <div id="heading">
       <h1 class="testing">TESTING SITE</h1>
@@ -50,7 +66,10 @@
       </form>
     </div>
   </div>
-  <div id="popover"><!--#4DHTML t_popOver --></div>
+  <!--#4DHTML t_popOver -->
   <script src="./scripts/main.js"></script>  
 </body>
 </html>
+
+
+
