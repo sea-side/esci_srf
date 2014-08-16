@@ -32,7 +32,7 @@
         <input type="button" value="Print" onclick="window.print()">
       </p>
       <div class="yesprint" id="confirmation"></div>
-      <!--#4DHTML bl_SurveyRequestForm-->
+      <!--#4DHTML bl_webContent-->
     </div>
     <div id="footer"></div>
     <script src="./scripts/main.js">

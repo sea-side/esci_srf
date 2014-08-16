@@ -257,7 +257,8 @@ li.course_title[data-field-label="Course:"]
 
 li.course_title[data-field-label="Course:"]:before
 {
-  top:0.25em;  
+  top:0.25em;
+  
 }
 
 input[type=radio]

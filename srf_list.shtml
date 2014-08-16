@@ -58,13 +58,12 @@
 
     <div id="intro" class="instructions"><!--#4DHTML vInstructions--></div>
 
-    <div id="list">
-      <form id="srf" name="srf" action="http://db01.id.ucsb.edu:8019/4DACTION/WEB_SetSurveyRequestData/<!--#4DTEXT vDepartment-->" method="post" accept-charset="utf-8">
-         <input id="srf_submit" type="submit" value="Submit Changes">
-         <form id="save_add_courses" name="save_add_courses" action="4DACTION/WEB_SRF_AddCourses/<!--#4DTEXT vDepartment-->" method="post" accept-charset="utf-8">
-          <input id="add_submit" type="submit" value="Add Additional ESCI Surveys..."/>
-         </form>
-          <!--#4DHTML bl_SurveyRequestForm -->
+    <div id="list">       
+      <form id="srf" name="srf" action="../4DACTION/WEB_SetSurveyRequestData/<!--#4DTEXT vDepartment-->" method="post" accept-charset="utf-8">
+       <input id="add_submit" type="submit" value="Add Additional ESCI Surveys..." >
+       <input id="srf_submit" type="submit" value="Submit Changes">
+       <input id="return_page" name="return_page" type="hidden" value="">
+       <!--#4DHTML bl_SurveyRequestForm -->
       </form>
     </div>
   </div>
@@ -72,6 +71,7 @@
   <script src="./scripts/main.js"></script>  
 </body>
 </html>
+
 
 
 

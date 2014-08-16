@@ -35,6 +35,7 @@
         </filter>
       </defs>
     </svg>
+<!----------------------------------------------------------------------------->
     <div id="content">
       <div id="heading">
         <h1 class="testing">TESTING SITE</h1>
@@ -51,19 +52,33 @@
         </h3>
       </div>
       <div id="error_msg" class="warning">
-        <p id="error_text" class="error">
-          <!--#4DHTML vWEBErrMsg-->
-        </p>
+        <p id="error_text" class="error"><!--#4DHTML vWEBErrMsg--></p>
       </div>
-      <div id="intro" class="instructions">
-        <!--#4DHTML vInstructions-->
-      </div>
+       <div id="intro" class="instructions">
+         <p>Welcome to the ESCI Online Survey Request Management.</p>
+         <ul>
+          <li>To request additional ESCI Evaluations, click the plus sign to add additional courses. For each course you add:
+           <ol>
+            <li>Choose a course from the drop down list for your department.</li>
+            <li>Enter the name of the Instructor to be evaluated.</li>
+            <li>Select the Instructor Rank and Course Type from the drop down lists.</li>
+           </ol>
+          </li>
+          <li>
+           <strong><em>For courses not listed in the drop down list</em></strong>:
+           <ol>
+            <li></li>
+           </ol>
+          </li>
+         </ul>
+        </div>
       <div id="list">
         <form name="add_courses" action="http://db01.id.ucsb.edu:8019/4DACTION/WEB_SRF_AddCourses" method="post" accept-charset="utf-8" id="add_courses" >
-          <!--#4DHTML bl_AddCourses-->
+          <!--#4DHTML bl_webContent-->
         </form>
       </div>
     </div>
     <script src="./scripts/main.js"></script>
   </body>
 </html>
+
