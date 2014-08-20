@@ -36,6 +36,14 @@
       </defs>
     </svg>
 <!----------------------------------------------------------------------------->
+    <div id="nav" class="navigation noprint">
+     <h2>ESCI Survey Request Administration</h2>   
+<!----------------------------------------------------------------------------->
+     <!--Need to edit link here-->
+    <input type="button" class="centered" value="Return to Survey Request Course List" onclick="location.href=&#39;http://db01.id.ucsb.edu:8019/&#39;">
+<!----------------------------------------------------------------------------->
+     <!--<input type="button" value="Print" onclick="window.print()">   -->
+    </div>
     <div id="content">
       <div id="heading">
         <h1 class="testing">TESTING SITE</h1>
@@ -64,20 +72,19 @@
             <li>Select the Instructor Rank and Course Type from the drop down lists.</li>
            </ol>
           </li>
-          <li>
-           <strong><em>For courses not listed in the drop down list</em></strong>:
-           <ol>
-            <li></li>
-           </ol>
+          <li><strong><em>For courses not listed in the drop down list</em></strong>:
+           Send your request for an ESCI Evaluation to: <a id="request_custom_course" href="mailto:esci@id.ucsb.edu?subject=ESCI: Request to evaluate an unlisted course&body=[Please enter as much information as you can about the unlisted course you wish to have evaluated.]">esci@id.ucsb.edu</a>
           </li>
          </ul>
         </div>
+      <div id="confirmation">
+       <!--#4DHTML vConfirmationMsg-->
+      </div>
       <div id="list">
         <form name="add_courses" action="http://db01.id.ucsb.edu:8019/4DACTION/WEB_SRF_AddCourses" method="post" accept-charset="utf-8" id="add_courses" >
           <!--#4DHTML bl_webContent-->
         </form>
-      </div>
-    </div>
+      </div>      
     <script src="./scripts/main.js"></script>
   </body>
 </html>

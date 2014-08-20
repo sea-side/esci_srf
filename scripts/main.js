@@ -16,11 +16,7 @@
 ( function( window, document, undefined ) {
 
   'use strict';
-  //   console.group( "Welcome to ESCI Survey Request" )
-  //   console.profile( "Intializing web page..." );
 
-  //   console.time( "Beginning timeline profile." );
-  //   console.timeStamp( "Setting variables for selectors" );
 
   ////////////////////////////////////////////////////////////////////////////////
   ///                           * Selectors *                            ///
@@ -39,7 +35,6 @@
   var myScrollHeight = 0;
 
   if ( window.jQuery ) {
-    //     console.log( "JQuery is loaded - noConflict invoked." )
     window.jQuery.noConflict();
   }
 
@@ -72,8 +67,6 @@
   ///                              * Methods *                               ///
   ////////////////////////////////////////////////////////////////////////////////
 
-
-  //   console.timeStamp( "Function definitions" )
 
   function loadScreen() {
     if ( document.all ) {
@@ -209,24 +202,29 @@
       } );
 
     ////////////////////////////////////////////////////////////////////////////////
-    // These 4 listeners are OK to remain through the life of the page. Multiple addEventListeners() should not be a problem
-    input_instructor.addEventListener( 'keypress', inputAlpha );
-
-    input_instructor.addEventListener( 'blur', setInput, false );
-    input_instructor.addEventListener( 'change', setInput, false );
-    input_instructor.addEventListener( 'input', setInput, false );
-    ////////////////////////////////////////////////////////////////////////////////
-
-    ////////////////////////////////////////////////////////////////////////////////
-    // These 2 EventListeners (to save changes) needs to be changed each time (from any previous calls to this function),
-    // and then reset with the correct parameters. So we create in in a local variable that calls the
-    // function with the necessary params, and then unbinds itself.        
+    // This EventListener (to save changes) needs to be changed each time (from any previous calls to this function),
+    // and then reset with the correct parameters. So we create it in a local variable that calls the
+    // real processing function with the necessary parameters, and then unbinds itself.
+    // The function is bound to the text <input> to catch "enter" keystrokes
+    // and to the "Save changes" link to catch clicks. Both are bound/unbound dynamically.
     var saveCourseBound = function( e ) {
       e = e || window.event;
+      // Catch the mouseclick events on the 'save changes' button
+      if (e.type === 'click') {
+        if ( e.preventDefault ) e.preventDefault();
+        saveEditCourse( surveyNumber, sel_ranks, sel_types, e );
+        dgi("edit_save_changes").removeEventListener('click', saveCourseBound);
+        dgi("edit_instructor").removeEventListener( 'keypress', saveCourseBound);        
+        e.stopImmediatePropagation(); // No more event handling for this event
+      }
+      // Catch the 'enter' key on the text input field
       if ( e.type === 'keypress' && e.keyCode === 13 ) { // This should be the 'Enter' key on the text field (Instructor Name)
         saveEditCourse( surveyNumber, sel_ranks, sel_types, e );
-        this.removeEventListener( e.type, saveCourseBound, false );
+        dgi("edit_save_changes").removeEventListener('click', saveCourseBound);
+        dgi("edit_instructor").removeEventListener( 'keypress', saveCourseBound);        
+        e.stopImmediatePropagation(); // No more event handling for this event
       }
+      // Else do nothing (pass)
       return;
     };
 
@@ -366,13 +364,7 @@
     window.removeEventListener( 'mousewheel', noScroll );
     window.removeEventListener( 'DOMMouseScroll', noScroll );
     dgi( "content" ).classList.remove( 'blurout1' );
-
-    // Unset the event listeners for the text field
-    var input_instructor = dgi( "edit_instructor" );
-    input_instructor.removeEventListener( 'blur', setInput );
-    input_instructor.removeEventListener( 'change', setInput );
-    input_instructor.removeEventListener( 'input', setInput );
-
+    
     //dgi("edit_save_course").removeEventListener()
     // Clear any existing messages
     popClearErrorMessages();
@@ -386,14 +378,14 @@
   // CSS transforms this input to DISPLAY all UPPERCASE. The actual value is updated at validation.
   function inputAlpha( e ) {
     e = e || window.event;
-    var key = e.keyCode || e.which;
+    var key = e.which ?  e.which : e.keyCode ;
     key = String.fromCharCode( key );
 
     var functionalKeys = [ 8, 9, 16, 17, 18, 91, 46, 127, 37, 38, 39, 40, 27, 192 ] // Delete, backspace, arrows, TAB, ESC, etc.
     var regex = /[A-Za-z\- &]/;
 
-    e.returnValue = regex.test( key ) || ( functionalKeys.indexOf( parseInt( e.keyCode ) ) >= 0 );
-    if ( !e.returnValue && e.preventDefault ) e.preventDefault();
+    e.returnValue = regex.test( key ); // || ( functionalKeys.indexOf( parseInt( e.keyCode ) ) >= 0 );
+    //if ( !e.returnValue && e.preventDefault ) e.preventDefault();
     return e.returnValue;
 
   }
@@ -432,8 +424,8 @@
         if ( name.match( /([\-&]\s?){2,}/ ) ) {
           popAddErrorMessage( "Instructor: The data doesn't make sense:" + name.match( /([\-&]\s?){2,}/ )[ 0 ] + ".", "error" );
         }
-        if ( name.match( /[^A-Za-z \-&]/ ) ) {
-          popAddErrorMessage( "Instructor: Invalid characters:" + name.match( /[^A-Za-z \-&]/g ).join( "/" ) + ".", "error" );
+        if ( name.match( /[^A-Za-z \-&]/ ) ) { // Bad characters can be entered via copy/paste.
+          popAddErrorMessage( "Instructor: Invalid characters: " + name.match( /[^A-Za-z \-&]/g ).join( "/" ) , "error" );
         }
 
         if ( name.match( /^ / ) ) {
@@ -572,8 +564,6 @@
   ///               * Processing logic and event handlers *               ///
   ///////////////////////////////////////////////////////////////////////////////
 
-  //   console.group( "Processing logic and event handlers" );
-  //   console.timeStamp( "Processing logic and event handlers" );
 
   // First check what to display, if there is an errror message
   var errMsg = dgi( "error_text" );
@@ -597,14 +587,22 @@
     dgi( "add_submit" ).addEventListener( 'click', submitAddCourses );
   }
 
-  //   console.timeStamp( "Adding handlers to <a> Edit course links" );
   // Event handlers for the <a>:"Edit Course Information" elements. - 7/21/14 Tested OK
   // Survey Number bound as argument; second  parameter should be automatically passed as the Event by the browser.
   for ( var i = 0; i < aEditCourseGroup.length; i++ ) {
     aEditCourseGroup[ i ].addEventListener( 'click', showPopOver.bind( null, aEditCourseGroup[ i ].id.replace( "editCourse_", "" ) ), false );
   }
+    
+    ////////////////////////////////////////////////////////////////////////////////
+    // These 4 listeners are OK to remain through the life of the page.
+    if (dgi("edit_instructor")) {
+      dgi( "edit_instructor" ).addEventListener( 'keypress', inputAlpha );
+      dgi( "edit_instructor" ).addEventListener( 'blur', setInput, false );
+      dgi( "edit_instructor" ).addEventListener( 'change', setInput, false );
+      dgi( "edit_instructor" ).addEventListener( 'input', setInput, false );
+    }
+    ////////////////////////////////////////////////////////////////////////////////
 
-  //   console.timeStamp( "Adding handlers for subdept Radio groups" );
   var subdeptRadios;
   // Loop over each group of Sub Department radio buttons
   for ( var j = 0, survey_number; j < subdeptULGroup.length; j++ ) {
@@ -624,13 +622,6 @@
     node.classList.add( 'fadeout' );
   } );
 
-  //   console.timeStamp( "Finished." );
-  //   console.groupEnd();
-
-  //   console.timeEnd( "Beginning timeline profile." );
-  //   console.log( "Finished loading web page" )
-  //   console.profileEnd();
-  //   console.groupEnd();
 } )( window, document );
 
 

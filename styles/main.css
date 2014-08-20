@@ -26,6 +26,17 @@ h2
   text-transform:capitalize;
 }
 
+.navigation h2
+{
+  margin: 0;
+  line-height: 1em;
+  position:absolute;
+  left:0;
+  right:30%;	
+  -webkit-align-self: flex-start;
+          align-self: flex-start;          
+}
+
 h3
 {
   border-radius:25px;
@@ -44,17 +55,18 @@ h3
   width:50%;
 }
 
-input#srf_submit
+.navigation input
 {
-  position: relative;
-  left:40%;
-  width: 20%;
-  border:3px solid firebrick;
-  color:firebrick;
-  background-color:#D6D9DA;
+  /*position: relative;*/
+  /*left:40%;*/
+  /*width: 20%;*/
+  margin: 0 0.5em;
+  border:3px solid #75a979;
+  color:#e1ffe4;
+  background-color:#498449;
   text-align: center;
-  border-radius: 2em;
-  font-size: 1.4em;
+  border-radius: 1.5em;
+  font-size: 0.8em;
   -webkit-appearance: none;
 }
 
@@ -257,8 +269,7 @@ li.course_title[data-field-label="Course:"]
 
 li.course_title[data-field-label="Course:"]:before
 {
-  top:0.25em;
-  
+  top:0.25em;  
 }
 
 input[type=radio]
@@ -560,7 +571,11 @@ input.fixed
 {
   font-family:Times, Arial, sans-serif;
   margin:10px 0;
-  padding:12px;
+  padding:1em;
+  border-radius: 0.5em;
+  position: relative;
+  left:8%;
+  width: 84%;
 }
 
 .info
@@ -635,6 +650,138 @@ input.fixed
 /*Compatibility for older broswers*/
 [hidden] {display: none;}
 
+#content
+{
+  margin-top: 4em;
+}
+
+.navigation {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+
+          flex-flow: row wrap;
+  -webkit-flex-flow: row wrap;
+  
+  /* This aligns items to the end line on main-axis */
+          justify-content: flex-end;
+  -webkit-justify-content: flex-end;
+  
+  background-color: #cdc;
+  position: fixed;
+  height: 2em;
+  width:100%;
+  top:0;
+  left:0;
+  height: auto;
+  padding: 0.5em 0;
+  z-index:1;
+  border-bottom: 2px solid white;
+}
+
+/* Medium screens */
+@media all and (max-width: 900px) {
+  .navigation {
+    /* When on medium sized screens, we center it by evenly distributing empty space around items */
+            justify-content: space-around;
+    -webkit-justify-content: space-around;
+    font-size: .7em;
+  }
+  .navigation h2 {
+    letter-spacing: 2px;
+    font-weight: 500;
+    position:relative;
+  }
+  .popover
+  {
+    display:none;
+            transition: display 0.5s ease-in-out 0s;
+    -webkit-transition: display 0.5s ease-in-out 0s;
+    border-style: none;
+    position:absolute;
+    z-index: 3;
+    padding: 0;
+    width:75%;
+    height:66%;
+    font-size: 1em;
+  }
+  
+  #edit_course
+  {
+    font-size: 1em;
+    padding: .8em;
+    background-color: rgba(236, 229, 39, 0.75);    
+  }
+    
+  #edit_messages li
+  {
+    border-radius: 0.4em;
+  }  
+}
+
+/* Small screens */
+@media all and (max-width: 640px) {
+  .navigation {
+    /* On small screens, we are no longer using row direction but column */
+            flex-direction: column;
+    -webkit-flex-direction: column;
+    position:static; /* We don't want a fixed menu bar on small screens. let it flow back at the top. */
+  }
+  
+  .navigation h2 {
+    text-align:center;
+    left:0;
+    right:0;
+    width:100%;
+  }
+  .navigation input {
+    margin: .3em;
+  }
+  .popover
+  {
+    display:none;
+            transition: display 0.5s ease-in-out 0s;
+    -webkit-transition: display 0.5s ease-in-out 0s;
+    border-style: none;
+    position:absolute;
+    z-index: 3;
+    padding: 0;
+    width:100%;
+    height:100%;
+    font-size: 0.5em;
+  }
+  
+  #edit_course
+  {
+    font-size: 0.5em;
+    padding: .5em;
+    background-color: rgba(236, 229, 39, 0.75);    
+  }
+  
+  #edit_messages
+  {
+    min-height: 0;
+  }
+  #edit_messages li
+  {
+    border-radius: 0.2em;
+  }
+  #edit_save_changes
+  {
+    position:absolute;
+    right: 1em;
+    bottom: 3em;
+  }
+  #edit_cancel
+  {
+    position:absolute;
+    right: 1em;
+    bottom: 1em;
+  }
+}
+
 @page
 {
   size:landscape; /* Not supported any more */
@@ -658,35 +805,11 @@ input.fixed
     display:none;
   }
   
-  .yesprint
+  .yesprint, .yesprint > * 
   {
     display:block!important;
+    font-family: monospace;
+    font-size: 1em;
+    color:red;
   }
 }
-
-@media screen 
-{
-  .noprint
-  {
-    display:block;
-  }
-  
-  .yesprint
-  {
-    display:block!important;
-  }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-

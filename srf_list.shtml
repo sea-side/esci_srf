@@ -37,14 +37,19 @@
     <feGaussianBlur stdDeviation='1' in="SourceGraphic"></feGaussianBlur>
    </filter>
   </defs>
- </svg>  
+ </svg>
+ <div id="nav" class="navigation">
+  <h2>ESCI Survey Request Administration</h2>
+  <input id="add_submit" type="submit" form="srf" value="Add Additional ESCI Surveys..." >
+  <input id="srf_submit" type="submit" form="srf" value="Submit Changes">
+  <input id="return_page" type="hidden" form="srf" name="return_page" value="">  
+ </div>
 
   <div id="content">
     <div id="heading">
       <h1 class="testing">TESTING SITE</h1>
 
-      <h2>ESCI Survey Request Administration</h2>
-
+      
       <h3 class="ghosted">For Academic Quarter: <!--4DTEXT vCurrentQuarter-->
       <br>
       <span class="department"><!--#4DTEXT vDeptTitle--></span></h3>
@@ -60,9 +65,6 @@
 
     <div id="list">       
       <form id="srf" name="srf" action="../4DACTION/WEB_SetSurveyRequestData/<!--#4DTEXT vDepartment-->" method="post" accept-charset="utf-8">
-       <input id="add_submit" type="submit" value="Add Additional ESCI Surveys..." >
-       <input id="srf_submit" type="submit" value="Submit Changes">
-       <input id="return_page" name="return_page" type="hidden" value="">
        <!--#4DHTML bl_SurveyRequestForm -->
       </form>
     </div>
