@@ -119,7 +119,7 @@
       }
       while ( /[\-& ]/.test( bufferName.charAt( bufferName.length - 1 ) ) ) {
         bufferName = bufferName.substring( 0, bufferName.length - 1 );
-      }      
+      }
       this.value = bufferName;
     }
 
@@ -127,17 +127,19 @@
     var isValidName = validateName( this );
 
     if ( isValidName ) { // validateName() returns 'false' if not good
-      
+
       if ( e.type === 'blur' ) { // Only change the value on blur, not on every input
         this.value = isValidName;
       }
 
       this.classList.remove( 'input_error' ); // The <input> field
+      this.classList.add('input_valid');
 
       messageList.classList.add( 'fadeout' ); // This seems to work correctly...8/11/14
     } else {
       // Redisplay error messages (that may have been faded out).
       messageList.classList.remove( 'fadeout' ); // This seems to work correctly...8/11/14
+      this.classList.remove('input_valid');
       this.classList.add( 'input_error' );
     }
     return isValidName; // Either the (corrected) valid name, or false if not valid  
@@ -332,16 +334,27 @@
 
   }
 
-  // Clears error/validation messages for the inputs that handle instructor names.
+  // Clears error/validation messages for the inputs that require error validation.
   // For the srf_addcourses.shtml page, there may be more than one (created dynamically)
   // so we need to pass some reference to the calling field, from which we can get the
   // associated error message list. The relationship we use is that each instructor input which
   // needs this validation has an associated <ul> with an id of the input's id + "_messages".
-  function popClearErrorMessages( inputField ) {
-    // Clears any existing messages in the calling object's error list <ul>
-    var messageList = dgi( inputField.id + "_messages" );
-    while ( messageList.firstChild ) {
-      messageList.removeChild( messageList.firstChild );
+  function popClearErrorMessages( inputField, e ) {
+    inputField = inputField || this;
+    switch ( inputField.nodeName.toLocaleLowerCase() ) {
+      case "input":
+        // Clears any existing messages in the calling object's error list <ul>
+        var messageList = dgi( inputField.id + "_messages" );
+        while ( messageList.firstChild ) {
+          messageList.removeChild( messageList.firstChild );
+        }
+        break;
+      case "select":
+        inputField.classList.remove('input_error');
+        if (this[0].value === "") {
+              this.removeChild(this[0]);
+        }
+        break;
     }
   }
 
@@ -406,15 +419,18 @@
     ////////////////////////////////////////////////////////////////////////////////
     // Automatic corrections, cleanup
     // 1. Set to UPPERCASE
-    var name = inputField.value, bufferName;
-    
+    var name = inputField.value,
+      bufferName;
+
     name = name.toLocaleUpperCase();
     // 2. Trim multiple spaces, dashes, commas, ampersands to single
     name = name.replace( / {2,}/g, " " ).replace( /\-{2,}/g, "-" ).replace( /,{2,}/g, "," ).replace( /&{2,}/g, "&" );
     // Pad ampersands with spaces, if there is room
-    
+
     bufferName = name.replace( /(?=[^ ])&(?=[^ ])/g, ' & ' );
-    if ( bufferName.length <= 30 ) { name = bufferName; }
+    if ( bufferName.length <= 30 ) {
+      name = bufferName;
+    }
 
     // Next check for basic errors that can be flagged here. e.g. Name begins/ends with a comma or space
     if ( name.match( /^[A-Z]{2,}(\s?[,&\-]?\s?[A-Z]+)*$/ ) ) { // Name is good
@@ -426,7 +442,7 @@
 
       if ( name === "" || name === null ) {
         popAddErrorMessage( inputField, "Instructor: This field is required.", "error" );
-      } else if ( name.length < 2 || (name.search( /[ \-&]/ ) < 2 && name.search( /[ \-&]/ ) >= 0 )) {
+      } else if ( name.length < 2 || ( name.search( /[ \-&]/ ) < 2 && name.search( /[ \-&]/ ) >= 0 ) ) {
         popAddErrorMessage( inputField, "Instructor: Last Name must be at least 2 characters.", "error" );
       } else {
 
@@ -462,16 +478,26 @@
 
   }
 
-  function submitForm( e ) {
+  function submitForm( action, e ) {
     e = e || window.event;
     if ( e.preventDefault ) e.preventDefault();
     e.returnValue = false; // For IE compatibility ...
     // Set the return page for the server to send back
-    dgi( "return_page" ).value = "srf_submit.shtml";
+    switch (action) {
+      case "Add":
+        dgi( "return_page" ).value = "srf_addcourses.shtml";
+        break;
+      case "Submit":
+      default:
+        dgi( "return_page" ).value = "srf_submit.shtml";
+        break;
+      
+    }
     //dgi( "srf_submit" ).disabled = true;
     //dgi( "srf_submit" ).value = "Processing ... Please wait.";
 
-    this.removeEventListener( e.type, submitForm );
+    //this.removeEventListener( e.type, submitForm );
+    
     dgi( "srf" ).submit();
 
     // Somehow it would be good to re-enable it after submission ... in case the user goes back to the page.
@@ -484,12 +510,67 @@
     e = e || window.event;
     if ( e.preventDefault ) e.preventDefault();
     e.returnValue = false; // For IE compatibility ...
-    // Set the return page for the server to send back
-    dgi( "return_page" ).value = "srf_addcourses.shtml";
+    // Basic Validation:
+    // 1. Are all Instructor input fields valid? ('add_instructor_###')
+    // 2. Are all select elements valid? The only one that has a default state of 'Please select something...'
+    //    is the Course ('add_course_###'). Both Rank and Type default to the first in the list, so they don't need to be checked here.
+    var formElements = dgi( "add_courses" ).elements;
+    var valid = true;
+    var errors = document.createElement( "ul" );
+    var errMsg = document.createElement( "li" );
+    errMsg.textContent = "Please correct errors and submit again. Required fields in error are highlighted in red.";
+    errMsg.classList.add( "input_error" );
+    errors.appendChild( errMsg );
+    // Clear the error-holding <div> of any previous entries
+    while (dgi("error_msg").firstElementChild) {
+      dgi("error_msg").removeChild(dgi("error_msg").firstElementChild);
+    }
+    
+    for ( var i = 0, element; i < formElements.length; i++ ) {
+      element = formElements[ i ];
+      if ( element.hasAttribute( "required" ) ) {
+        switch (element.nodeName.toLocaleLowerCase()) {
+          case "select":
+            if ( element.selectedIndex === 0 ) {
+              valid = false;
+              errMsg = document.createElement( "li" );
+              errMsg.textContent = "You must choose a course. This field is required.";
+              errors.appendChild( errMsg );
+              element.classList.add( "input_error" );
+            } else {
+              element.classList.remove( "input_error" );
+            }
+            break;
+          case "input":
+            // Either the presence of 'error' or the absence of 'valid' should be an error,
+            // according to the way our code (is supposed to) work.
+            if ( element.className.indexOf( "input_error" ) >= 0 || element.className.indexOf( "input_valid" ) < 0 ) {
+              valid = false;
+              errMsg = document.createElement( "li" );
+              errMsg.textContent = "Instructor name is invalid. This field is required.";
+              errors.appendChild( errMsg );
+              // Add a class to highlight the individual item in error.
+              element.classList.add( "input_error" );
+            } else {
+              element.classList.remove( "input_error" );
+            }
+            break;
+        }
+      }
+    }
 
-    this.removeEventListener( e.type, submitAddCourses );
-    dgi( "srf" ).submit();
+    if ( valid ) {
+      // Set the return page for the server to send back
+      dgi( "return_page" ).value = "srf_addcourses.shtml";
 
+      this.removeEventListener( e.type, submitAddCourses );
+      this.submit();
+    } else {
+      dgi( "error_msg" ).appendChild( errors );
+      dgi("error_msg").removeAttribute("style"); // It has a default style of 'display:none'.
+      errors.scrollIntoView( true );
+      return false;
+    }
   }
 
   // This function only changes the Sub Department variables. Then it calls updateSTDQList.
@@ -545,6 +626,8 @@
 
   // Clones the 'template' <div> with children; renames the variables appropriately;
   // and appends it to new course list container.
+  // We might consider forcing the previous add courses to be valid before allowing a clone.
+  // This is not implemented right now. - 8/22/14
   function addNewCourse( e ) {
     e = e || window.event;
     if ( e.preventDefault ) {
@@ -558,27 +641,42 @@
       var currentCloneNumber = String( parseInt( lastCloneNumber ) + 1 );
 
       var incrementClone = function( node ) {
-        //var nl = node.hasAttributes ? node.attributes.length : 0;
-        //for ( var i = 0; i < nl; i++ ) {
         // Increment values that have the [var_name_number] format for 'id', 'name', and 'for'
-        if (node.hasAttribute('id')) { node.id = node.id.replace( "_1", "_" + currentCloneNumber ); }
-        if (node.hasAttribute('name')) { node.name = node.name.replace( "_1", "_" + currentCloneNumber ); }
-        if (node.hasAttribute('htmlFor')) { node.htmlFor = node.htmlFor.replace( "_1", "_" + currentCloneNumber ); }
-        //if ( /_[0-9]+/.test( node.attributes[ i ].value ) && /id|for|name/.test( node.attributes[ i ].name ) ) {
-        //  node.attributes[ i ].value = node.attributes[ i ].value.replace( "_1", "_" + currentCloneNumber );
-        //}
-        //}
+        if ( node.hasAttribute( 'id' ) ) {
+          node.id = node.id.replace( "_1", "_" + currentCloneNumber );
+        }
+        if ( node.hasAttribute( 'name' ) ) {
+          node.name = node.name.replace( "_1", "_" + currentCloneNumber );
+        }
+        if ( node.hasAttribute( 'htmlFor' ) ) {
+          node.htmlFor = node.htmlFor.replace( "_1", "_" + currentCloneNumber );
+        }
+        // Remove any dynamic classing (i.e. 'valid' , 'error')
+        node.classList.remove( 'valid' );
+        node.classList.remove( 'error' );
       };
 
       walkDOM( cloneCourse, incrementClone );
 
+
       // Append new clonedCourse to the container <div>
       dgi( "new_surveys" ).appendChild( cloneCourse );
+      // Kill any existing error messages that my have gotten cloned
+      popClearErrorMessages( dgi( "add_instructor_" + currentCloneNumber ) );
+      dgi("add_instructor_"+currentCloneNumber).classList.remove("input_error");
+      dgi("add_instructor_"+currentCloneNumber).classList.remove("input_valid");
+      
       // Re-assign the event handlers for the child elements in the newly cloned <div>
       dgi( "add_instructor_" + currentCloneNumber ).addEventListener( 'keypress', inputAlpha );
       dgi( "add_instructor_" + currentCloneNumber ).addEventListener( 'blur', setInput, false );
       dgi( "add_instructor_" + currentCloneNumber ).addEventListener( 'change', setInput, false );
       dgi( "add_instructor_" + currentCloneNumber ).addEventListener( 'input', setInput, false );
+      dgi("add_course_" + currentCloneNumber).addEventListener('change',
+          function () {                              
+            popClearErrorMessages.bind((dgi("add_course_" + currentCloneNumber),
+                                        dgi("add_course_" + currentCloneNumber)))();            
+          }, false);
+
       // Clear the instructor name input. The other inputs are <select> type and the clone
       // call does not preserve their .selectedIndex.
       dgi( "add_instructor_" + currentCloneNumber ).value = "";
@@ -636,12 +734,12 @@
       {
         // Does the main form exist?
         if ( dgi( "srf" ) ) {
-          dgi( "srf" ).addEventListener( 'submit', submitForm );
+          dgi( "srf" ).addEventListener( 'submit', submitForm.bind(dgi("srf"), "Submit") );
+        }
+        if (dgi("add_submit")) {
+          dgi("add_submit").addEventListener( 'click', submitForm.bind(dgi("srf"),"Add") );
         }
 
-        if ( dgi( "add_submit" ) ) {
-          dgi( "add_submit" ).addEventListener( 'click', submitAddCourses );
-        }
         // Event handlers for the <a>:"Edit Course Information" elements. - 7/21/14 Tested OK
         // Survey Number bound as argument; second  parameter should be automatically passed as the Event by the browser.
         for ( var i = 0; i < aEditCourseGroup.length; i++ ) {
@@ -676,15 +774,18 @@
 
     case "Submit Surveys":
       {
-
         break;
       }
 
     case "Add New Courses":
       {
+
+        dgi( "add_courses" ).addEventListener( 'submit', submitAddCourses, false );
+
         if ( dgi( "btn_append_course" ) ) {
           dgi( "btn_append_course" ).addEventListener( 'click', addNewCourse, false );
         }
+
         if ( dgi( "add_instructor_1" ) ) {
           // These are the same input filters as the input_instructor field
           // of the main srf_list.shtml page. They start on the one default
@@ -694,6 +795,13 @@
           dgi( "add_instructor_1" ).addEventListener( 'blur', setInput, false );
           dgi( "add_instructor_1" ).addEventListener( 'change', setInput, false );
           dgi( "add_instructor_1" ).addEventListener( 'input', setInput, false );
+          
+          // This filter simply clears validation error messages on input change
+      dgi("add_course_1").addEventListener('change',
+          function () {                              
+            popClearErrorMessages.bind((dgi("add_course_1"), dgi("add_course_1")))();            
+          }, false);
+
 
           break;
         }
@@ -723,3 +831,4 @@
   ////////////////////////////////////////////////////////////////////////////////
 
 } )( window, document );
+
