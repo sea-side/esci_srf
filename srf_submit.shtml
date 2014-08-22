@@ -12,7 +12,7 @@
       <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
  </head>
- <body>
+ <body id="body" data-page-name="Submit Surveys">
   <div id="nav" class="navigation noprint">
    <h2>ESCI Survey Request Administration</h2>   
    <input type="button" class="centered" value="Return to home" onclick="location.href=&#39;http://db01.id.ucsb.edu:8019/&#39;">

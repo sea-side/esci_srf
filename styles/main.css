@@ -55,6 +55,54 @@ h3
   width:50%;
 }
 
+div#context_nav
+{
+  display:-webkit-box;
+  display:-moz-box;
+  display:-ms-flexbox;
+  display:-webkit-flex;
+  display:flex;
+          flex-flow: row wrap;
+  -webkit-flex-flow: row wrap;
+          justify-content: center;
+  -webkit-justify-content: center;
+  background-color:#cdc;
+  width:100%;
+}
+
+div#context_nav > button
+{
+  display: inline;
+          flex: 0 1 30%;  
+  -webkit-flex: 0 1 30%;  
+          appearance: none;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+  background-color: #709078;
+  color: #FFF;
+  border: 2px solid #fff;
+  border-radius: .5em;
+  font-size: larger;
+  margin: 4px;
+}
+div#context_nav > button:hover
+{
+  background-color: #fff;
+  color:#709078;
+}
+div#context_nav > button:active
+{
+  background-color: #555;
+  font-weight: bold;
+  color:#8cb697;
+}
+p#timestamp
+{
+  color:rgba(160,31,47,0.6);
+  font:bold normal 1.15em/125% 'american typewriter', consolas, courier, 'andale mono', monaco, monospace;
+  margin-left:2em;
+}
+
 .navigation input
 {
   /*position: relative;*/
@@ -70,7 +118,7 @@ h3
   -webkit-appearance: none;
 }
 
-.survey_container /* The main <div> for each Survey Request block */
+.survey_container, .add_container /* The main <div> for each Survey Request or Add Course block */
 {
   position:relative;
   padding:5px;
@@ -91,6 +139,40 @@ h3
   border-radius: .5em;
   background-color:rgba(105, 139, 117,.5);
 }
+
+.add_container ul
+{
+  list-style: none;
+}
+
+.add_container label
+{
+  display:inline-block;
+  float:left;
+  margin-right:1em;
+  width:50%;
+  font-weight: bold;
+  font-family: "Book Antiqua", "Bookman Old Style", Georgia, serif;
+}
+
+.add_container > ul > li, .survey_container > ul > li
+{
+  position: relative;  
+  margin: 2px;
+  width:auto;  
+}
+
+.add_container > ul > li, .add_container input
+{
+  float:left;
+}
+
+.add_container label
+{
+  text-align: right;
+  float:left;
+}
+
 a.link_editCourse
 {
   text-decoration: none;
@@ -402,13 +484,24 @@ input[type=radio][name^=stdq_]:checked + label
   border-radius: 50%;
 }
 
-#edit_messages
+.popMessageList
 {
-  min-height: 8em;
+  background-color:none;
+  position:relative; 
+  float:left;
+  top: -1.2em;
+  right: 0;
+  max-width: 10em;  
+  padding:0;  
+  z-index: 2;
 }
-#edit_messages li
+.popMessageList > li
 {
-  border-radius: 0.7em;
+  opacity:0.75;
+  padding: 0 0.5em;
+  left:0;
+          transition: all 0.3s ease-in 1s;
+  -webkit-transition: all 0.3s ease-in 1s;  
 }
 
 /* Since there are only a few SVG filters at this time,
@@ -548,7 +641,7 @@ input.fixed
   color:#111;
   font-family:"Helvetica Neue", Helvetica, sans-serif;
   font-size:medium;
-  font-weight:lighter;
+  font-weight:200;
   position:relative;
   left:7.5%;
   width:75%;
@@ -813,3 +906,8 @@ input.fixed
     color:red;
   }
 }
+
+
+
+
+

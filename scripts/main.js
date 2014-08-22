@@ -104,7 +104,9 @@
   // 'this' references the element that fired the event (the <input>)
   function setInput( e ) {
 
-    var e = e || window.event;
+    var messageList = dgi( this.id + "_messages" );
+
+    e = e || window.event;
 
     var bufferName = this.value; // <- [Needs to evaluate at call time]
     if ( e.type === 'blur' && bufferName.charAt ) {
@@ -117,38 +119,35 @@
       }
       while ( /[\-& ]/.test( bufferName.charAt( bufferName.length - 1 ) ) ) {
         bufferName = bufferName.substring( 0, bufferName.length - 1 );
-      }
-      // 2. Pad spaces around '&' chars, unless maximum size will be exceeded
-      if ( bufferName.replace( /&+/g, ' & ' ).length <= 30 ) {
-        bufferName = bufferName.replace( /&+/g, ' & ' );
-      }
+      }      
+      this.value = bufferName;
     }
 
     // The validateName() does some basic cleanup on bad input
-    var isValidName = validateName( bufferName );
+    var isValidName = validateName( this );
 
     if ( isValidName ) { // validateName() returns 'false' if not good
-
+      
       if ( e.type === 'blur' ) { // Only change the value on blur, not on every input
         this.value = isValidName;
       }
 
       this.classList.remove( 'input_error' ); // The <input> field
 
-      $( '#edit_messages' ).classList.add( 'fadeout' ); // This seems to work correctly...8/11/14
+      messageList.classList.add( 'fadeout' ); // This seems to work correctly...8/11/14
     } else {
       // Redisplay error messages (that may have been faded out).
-      $( '#edit_messages' ).classList.remove( 'fadeout' ); // This seems to work correctly...8/11/14
+      messageList.classList.remove( 'fadeout' ); // This seems to work correctly...8/11/14
       this.classList.add( 'input_error' );
     }
     return isValidName; // Either the (corrected) valid name, or false if not valid  
   }
 
   function showPopOver( surveyNumber, e ) {
-    popClearErrorMessages();
+    popClearErrorMessages( dgi( "edit_instructor" ) );
     loadScreen();
 
-    var e = e || window.event;
+    e = e || window.event;
     if ( e.preventDefault ) e.preventDefault();
 
     // Blur the background and prevent scrolling while the popOver is shown.
@@ -210,18 +209,18 @@
     var saveCourseBound = function( e ) {
       e = e || window.event;
       // Catch the mouseclick events on the 'save changes' button
-      if (e.type === 'click') {
+      if ( e.type === 'click' ) {
         if ( e.preventDefault ) e.preventDefault();
         saveEditCourse( surveyNumber, sel_ranks, sel_types, e );
-        dgi("edit_save_changes").removeEventListener('click', saveCourseBound);
-        dgi("edit_instructor").removeEventListener( 'keypress', saveCourseBound);        
+        dgi( "edit_save_changes" ).removeEventListener( 'click', saveCourseBound );
+        dgi( "edit_instructor" ).removeEventListener( 'keypress', saveCourseBound );
         e.stopImmediatePropagation(); // No more event handling for this event
       }
       // Catch the 'enter' key on the text input field
       if ( e.type === 'keypress' && e.keyCode === 13 ) { // This should be the 'Enter' key on the text field (Instructor Name)
         saveEditCourse( surveyNumber, sel_ranks, sel_types, e );
-        dgi("edit_save_changes").removeEventListener('click', saveCourseBound);
-        dgi("edit_instructor").removeEventListener( 'keypress', saveCourseBound);        
+        dgi( "edit_save_changes" ).removeEventListener( 'click', saveCourseBound );
+        dgi( "edit_instructor" ).removeEventListener( 'keypress', saveCourseBound );
         e.stopImmediatePropagation(); // No more event handling for this event
       }
       // Else do nothing (pass)
@@ -260,12 +259,11 @@
 
   function saveEditCourse( survey_number, sel_ranks, sel_types, e ) {
 
-    var e = e || window.event;
+    e = e || window.event;
     if ( e.preventDefault ) e.preventDefault();
 
     // *****ADD: Validation as usual for the name...
-    var nameChange = dgi( "edit_instructor" ).value;
-    nameChange = validateName( nameChange ); //  Will set to 'false' if invalid
+    var nameChange = validateName( dgi( "edit_instructor" ) ); //  Will set to 'false' if invalid
     if ( nameChange ) {
 
       var fieldChange;
@@ -322,7 +320,7 @@
       updateSTDQList( survey_number, subdept );
 
       // Clear any error messages from the message <section>
-      popClearErrorMessages();
+      popClearErrorMessages( dgi( "edit_instructor" ) );
 
       // And close the popOver    
       hidePopOver( e );
@@ -334,17 +332,22 @@
 
   }
 
-  function popClearErrorMessages() {
-    // Clears any existing messages in the popOver item
-    var messageList = dgi( "edit_messages" );
+  // Clears error/validation messages for the inputs that handle instructor names.
+  // For the srf_addcourses.shtml page, there may be more than one (created dynamically)
+  // so we need to pass some reference to the calling field, from which we can get the
+  // associated error message list. The relationship we use is that each instructor input which
+  // needs this validation has an associated <ul> with an id of the input's id + "_messages".
+  function popClearErrorMessages( inputField ) {
+    // Clears any existing messages in the calling object's error list <ul>
+    var messageList = dgi( inputField.id + "_messages" );
     while ( messageList.firstChild ) {
       messageList.removeChild( messageList.firstChild );
     }
   }
 
-  function popAddErrorMessage( messageText, classType ) {
-    // Add a new message to the popOver's error list
-    var messageList = dgi( "edit_messages" );
+  function popAddErrorMessage( fieldname, messageText, classType ) {
+    // Add a new message to the calling object's error list <ul>
+    var messageList = dgi( fieldname.id + "_messages" );
     var msg = document.createElement( 'li' );
     msg.classList.add( classType );
     msg.textContent = messageText;
@@ -364,10 +367,10 @@
     window.removeEventListener( 'mousewheel', noScroll );
     window.removeEventListener( 'DOMMouseScroll', noScroll );
     dgi( "content" ).classList.remove( 'blurout1' );
-    
+
     //dgi("edit_save_course").removeEventListener()
     // Clear any existing messages
-    popClearErrorMessages();
+    popClearErrorMessages( dgi( "edit_instructor" ) );
     dgi( "edit_instructor" ).classList.remove( 'input_error' );
 
     dgi( "popEdit" ).style.display = "none";
@@ -378,7 +381,7 @@
   // CSS transforms this input to DISPLAY all UPPERCASE. The actual value is updated at validation.
   function inputAlpha( e ) {
     e = e || window.event;
-    var key = e.which ?  e.which : e.keyCode ;
+    var key = e.which ? e.which : e.keyCode;
     key = String.fromCharCode( key );
 
     var functionalKeys = [ 8, 9, 16, 17, 18, 91, 46, 127, 37, 38, 39, 40, 27, 192 ] // Delete, backspace, arrows, TAB, ESC, etc.
@@ -393,9 +396,9 @@
   // Clean up the input in case of bad user input
   // CSS is used with text-transform: uppercase to set the appearance to uppercase; onblur, the value is changed to uppercase also
 
-  function validateName( name ) {
+  function validateName( inputField ) {
 
-    popClearErrorMessages();
+    popClearErrorMessages( inputField );
 
     // Make a new element to show the validation result(s); there will always be at least one message.
     var err_message;
@@ -403,47 +406,53 @@
     ////////////////////////////////////////////////////////////////////////////////
     // Automatic corrections, cleanup
     // 1. Set to UPPERCASE
+    var name = inputField.value, bufferName;
+    
     name = name.toLocaleUpperCase();
     // 2. Trim multiple spaces, dashes, commas, ampersands to single
     name = name.replace( / {2,}/g, " " ).replace( /\-{2,}/g, "-" ).replace( /,{2,}/g, "," ).replace( /&{2,}/g, "&" );
+    // Pad ampersands with spaces, if there is room
+    
+    bufferName = name.replace( /(?=[^ ])&(?=[^ ])/g, ' & ' );
+    if ( bufferName.length <= 30 ) { name = bufferName; }
 
     // Next check for basic errors that can be flagged here. e.g. Name begins/ends with a comma or space
     if ( name.match( /^[A-Z]{2,}(\s?[,&\-]?\s?[A-Z]+)*$/ ) ) { // Name is good
-      popAddErrorMessage( "Instructor: Name is valid.", "valid" );
+      popAddErrorMessage( inputField, "Instructor: Name is valid.", "valid" );
 
       return name;
 
     } else {
 
       if ( name === "" || name === null ) {
-        popAddErrorMessage( "Instructor: This field is required.", "error" );
-      } else if ( name.length < 2 || name.search( /[ \-&]/ ) < 2 ) {
-        popAddErrorMessage( "Instructor: Last Name must be at least 2 characters.", "error" );
+        popAddErrorMessage( inputField, "Instructor: This field is required.", "error" );
+      } else if ( name.length < 2 || (name.search( /[ \-&]/ ) < 2 && name.search( /[ \-&]/ ) >= 0 )) {
+        popAddErrorMessage( inputField, "Instructor: Last Name must be at least 2 characters.", "error" );
       } else {
 
         if ( name.match( /([\-&]\s?){2,}/ ) ) {
-          popAddErrorMessage( "Instructor: The data doesn't make sense:" + name.match( /([\-&]\s?){2,}/ )[ 0 ] + ".", "error" );
+          popAddErrorMessage( inputField, "Instructor: The data doesn't make sense:" + name.match( /([\-&]\s?){2,}/ )[ 0 ] + ".", "error" );
         }
         if ( name.match( /[^A-Za-z \-&]/ ) ) { // Bad characters can be entered via copy/paste.
-          popAddErrorMessage( "Instructor: Invalid characters: " + name.match( /[^A-Za-z \-&]/g ).join( "/" ) , "error" );
+          popAddErrorMessage( inputField, "Instructor: Invalid characters: " + name.match( /[^A-Za-z \-&]/g ).join( " , " ), "error" );
         }
 
         if ( name.match( /^ / ) ) {
-          popAddErrorMessage( "Instructor: Field must not begin with a space.", "error" );
+          popAddErrorMessage( inputField, "Instructor: Field must not begin with a space.", "error" );
         } else if ( name.match( / $/ ) ) {
-          popAddErrorMessage( "Instructor: Field must not end with a space.", "error" );
+          popAddErrorMessage( inputField, "Instructor: Field must not end with a space.", "error" );
         }
 
         if ( name.match( /^-/ ) ) {
-          popAddErrorMessage( "Instructor: Field must not begin with a dash.", "error" );
+          popAddErrorMessage( inputField, "Instructor: Field must not begin with a dash.", "error" );
         } else if ( name.match( /-$/ ) ) {
-          popAddErrorMessage( "Instructor: Field must not end with a dash.", "error" );
+          popAddErrorMessage( inputField, "Instructor: Field must not end with a dash.", "error" );
         }
 
         if ( name.match( /^&/ ) ) {
-          popAddErrorMessage( "Instructor: Field must not begin with an ampersand.", "error" );
+          popAddErrorMessage( inputField, "Instructor: Field must not begin with an ampersand.", "error" );
         } else if ( name.match( /&$/ ) ) {
-          popAddErrorMessage( "Instructor: Field must not end with an ampersand.", "error" );
+          popAddErrorMessage( inputField, "Instructor: Field must not end with an ampersand.", "error" );
         }
       }
 
@@ -534,6 +543,59 @@
     }
   }
 
+  // Clones the 'template' <div> with children; renames the variables appropriately;
+  // and appends it to new course list container.
+  function addNewCourse( e ) {
+    e = e || window.event;
+    if ( e.preventDefault ) {
+      e.preventDefault();
+    }
+    // Always start the clone from the first <div> (the 'template')
+    if ( dgi( "add_survey_1" ) ) {
+      var cloneCourse = dgi( "add_survey_1" ).cloneNode( true );
+      //Get the last cloned child appended to determine the re-numbering of variables
+      var lastCloneNumber = dgi( "new_surveys" ).lastChild.id.replace( "add_survey_", "" );
+      var currentCloneNumber = String( parseInt( lastCloneNumber ) + 1 );
+
+      var incrementClone = function( node ) {
+        //var nl = node.hasAttributes ? node.attributes.length : 0;
+        //for ( var i = 0; i < nl; i++ ) {
+        // Increment values that have the [var_name_number] format for 'id', 'name', and 'for'
+        if (node.hasAttribute('id')) { node.id = node.id.replace( "_1", "_" + currentCloneNumber ); }
+        if (node.hasAttribute('name')) { node.name = node.name.replace( "_1", "_" + currentCloneNumber ); }
+        if (node.hasAttribute('htmlFor')) { node.htmlFor = node.htmlFor.replace( "_1", "_" + currentCloneNumber ); }
+        //if ( /_[0-9]+/.test( node.attributes[ i ].value ) && /id|for|name/.test( node.attributes[ i ].name ) ) {
+        //  node.attributes[ i ].value = node.attributes[ i ].value.replace( "_1", "_" + currentCloneNumber );
+        //}
+        //}
+      };
+
+      walkDOM( cloneCourse, incrementClone );
+
+      // Append new clonedCourse to the container <div>
+      dgi( "new_surveys" ).appendChild( cloneCourse );
+      // Re-assign the event handlers for the child elements in the newly cloned <div>
+      dgi( "add_instructor_" + currentCloneNumber ).addEventListener( 'keypress', inputAlpha );
+      dgi( "add_instructor_" + currentCloneNumber ).addEventListener( 'blur', setInput, false );
+      dgi( "add_instructor_" + currentCloneNumber ).addEventListener( 'change', setInput, false );
+      dgi( "add_instructor_" + currentCloneNumber ).addEventListener( 'input', setInput, false );
+      // Clear the instructor name input. The other inputs are <select> type and the clone
+      // call does not preserve their .selectedIndex.
+      dgi( "add_instructor_" + currentCloneNumber ).value = "";
+    }
+  }
+
+
+  // Standard recursive tree-traversal routine that executes the function 'func' for each node.
+  function walkDOM( node, func ) {
+    func( node );
+
+    node = node.firstElementChild;
+    while ( node ) {
+      walkDOM( node, func );
+      node = node.nextElementSibling;
+    }
+  }
 
   // IE 8 and older compatibility
   if ( !Function.prototype.bind ) {
@@ -562,9 +624,85 @@
 
   ///////////////////////////////////////////////////////////////////////////////
   ///               * Processing logic and event handlers *               ///
+  /// This logic needs to be conditioned somewhat based on which page we  ///
+  /// are dealing with. Since there are only a few pages in this site,    ///
+  /// we do best to keep all the .js in a single file, and separate it by ///
+  /// id# attributes in the <body> tag for each different .html page.     ///    
   ///////////////////////////////////////////////////////////////////////////////
 
+  var _page_type = dgi( "body" ).dataset.pageName;
+  switch ( _page_type ) {
+    case "List Surveys":
+      {
+        // Does the main form exist?
+        if ( dgi( "srf" ) ) {
+          dgi( "srf" ).addEventListener( 'submit', submitForm );
+        }
 
+        if ( dgi( "add_submit" ) ) {
+          dgi( "add_submit" ).addEventListener( 'click', submitAddCourses );
+        }
+        // Event handlers for the <a>:"Edit Course Information" elements. - 7/21/14 Tested OK
+        // Survey Number bound as argument; second  parameter should be automatically passed as the Event by the browser.
+        for ( var i = 0; i < aEditCourseGroup.length; i++ ) {
+          aEditCourseGroup[ i ].addEventListener( 'click', showPopOver.bind( null, aEditCourseGroup[ i ].id.replace( "editCourse_", "" ) ), false );
+        }
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // These 4 listeners are OK to remain through the life of the page.
+        if ( dgi( "edit_instructor" ) ) {
+          dgi( "edit_instructor" ).addEventListener( 'keypress', inputAlpha );
+          dgi( "edit_instructor" ).addEventListener( 'blur', setInput, false );
+          dgi( "edit_instructor" ).addEventListener( 'change', setInput, false );
+          dgi( "edit_instructor" ).addEventListener( 'input', setInput, false );
+        }
+        ////////////////////////////////////////////////////////////////////////////////
+        var subdeptRadios;
+        // Loop over each group of Sub Department radio buttons
+        for ( var j = 0, survey_number; j < subdeptULGroup.length; j++ ) {
+          // Extract the Survey Number from the id field
+          survey_number = subdeptULGroup[ j ].id.replace( "subdeptList_", "" );
+
+          // An individual radio group for a single survey <div> block
+          subdeptRadios = subdeptULGroup[ j ].children; // The children are <li> elements. Each <li> has a single <input> child.
+          for ( var i = 0, subdept; i < subdeptRadios.length; i++ ) {
+            subdept = subdeptRadios[ i ].firstElementChild.value;
+            subdeptRadios[ i ].addEventListener( 'click', changeSubDepartment.bind( null, survey_number, subdept ) );
+          }
+        }
+
+        break;
+      }
+
+    case "Submit Surveys":
+      {
+
+        break;
+      }
+
+    case "Add New Courses":
+      {
+        if ( dgi( "btn_append_course" ) ) {
+          dgi( "btn_append_course" ).addEventListener( 'click', addNewCourse, false );
+        }
+        if ( dgi( "add_instructor_1" ) ) {
+          // These are the same input filters as the input_instructor field
+          // of the main srf_list.shtml page. They start on the one default
+          // new course field, and will have to be added again to the new
+          // instructor input upon cloning the add_course <div>.
+          dgi( "add_instructor_1" ).addEventListener( 'keypress', inputAlpha );
+          dgi( "add_instructor_1" ).addEventListener( 'blur', setInput, false );
+          dgi( "add_instructor_1" ).addEventListener( 'change', setInput, false );
+          dgi( "add_instructor_1" ).addEventListener( 'input', setInput, false );
+
+          break;
+        }
+      }
+  }
+
+
+  ////////////////////////////////////////////////////////////////////////////////
+  ////////// Common to all pages //////////
   // First check what to display, if there is an errror message
   var errMsg = dgi( "error_text" );
   // If there is no error to report, hide the error block
@@ -578,50 +716,10 @@
     if ( dgi( "list" ) ) dgi( "list" ).style.display = "none";
   }
 
-  // Does the main form exist?
-  if ( dgi( "srf" ) ) {
-    dgi( "srf" ).addEventListener( 'submit', submitForm );
-  }
-
-  if ( dgi( "add_submit" ) ) {
-    dgi( "add_submit" ).addEventListener( 'click', submitAddCourses );
-  }
-
-  // Event handlers for the <a>:"Edit Course Information" elements. - 7/21/14 Tested OK
-  // Survey Number bound as argument; second  parameter should be automatically passed as the Event by the browser.
-  for ( var i = 0; i < aEditCourseGroup.length; i++ ) {
-    aEditCourseGroup[ i ].addEventListener( 'click', showPopOver.bind( null, aEditCourseGroup[ i ].id.replace( "editCourse_", "" ) ), false );
-  }
-    
-    ////////////////////////////////////////////////////////////////////////////////
-    // These 4 listeners are OK to remain through the life of the page.
-    if (dgi("edit_instructor")) {
-      dgi( "edit_instructor" ).addEventListener( 'keypress', inputAlpha );
-      dgi( "edit_instructor" ).addEventListener( 'blur', setInput, false );
-      dgi( "edit_instructor" ).addEventListener( 'change', setInput, false );
-      dgi( "edit_instructor" ).addEventListener( 'input', setInput, false );
-    }
-    ////////////////////////////////////////////////////////////////////////////////
-
-  var subdeptRadios;
-  // Loop over each group of Sub Department radio buttons
-  for ( var j = 0, survey_number; j < subdeptULGroup.length; j++ ) {
-    // Extract the Survey Number from the id field
-    survey_number = subdeptULGroup[ j ].id.replace( "subdeptList_", "" );
-
-    // An individual radio group for a single survey <div> block
-    subdeptRadios = subdeptULGroup[ j ].children; // The children are <li> elements. Each <li> has a single <input> child.
-    for ( var i = 0, subdept; i < subdeptRadios.length; i++ ) {
-      subdept = subdeptRadios[ i ].firstElementChild.value;
-      subdeptRadios[ i ].addEventListener( 'click', changeSubDepartment.bind( null, survey_number, subdept ) );
-    }
-  }
-
   // Add fadeout for any '.valid' elements, once the page has loaded
   forEach.call( $( '.valid', true ), function( node ) {
     node.classList.add( 'fadeout' );
   } );
+  ////////////////////////////////////////////////////////////////////////////////
 
 } )( window, document );
-
-

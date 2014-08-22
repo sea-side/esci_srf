@@ -10,7 +10,7 @@
     <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
   </head>
-  <body>
+  <body id="body" data-page-name="Add New Courses">
     <svg hidden xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" viewBox="0 0 2000 2000" height="100%" width="100%">
       <defs>
         <filter id="greenMatrix">
@@ -40,9 +40,8 @@
      <h2>ESCI Survey Request Administration</h2>   
 <!----------------------------------------------------------------------------->
      <!--Need to edit link here-->
-    <input type="button" class="centered" value="Return to Survey Request Course List" onclick="location.href=&#39;http://db01.id.ucsb.edu:8019/&#39;">
-<!----------------------------------------------------------------------------->
-     <!--<input type="button" value="Print" onclick="window.print()">   -->
+    <button id="btn_return_to_srf" type="button" class="centered" value="Return to Survey Request Course List">
+<!----------------------------------------------------------------------------->     
     </div>
     <div id="content">
       <div id="heading">
@@ -78,11 +77,18 @@
          </ul>
         </div>
       <div id="confirmation">
-       <!--#4DHTML vConfirmationMsg-->
+       <p><!--#4DHTML vConfirmationMsg--></p>
+      </div>
+       <p id="timestamp"><!--#4DHTML vTimeStamp --></p>
+      <div id="context_nav">
+       <button id="btn_save_add_courses" form="add_courses" type="submit">Save new courses and return to ESCI Survey Request</button>
+       <button id="btn_append_course" type="button">+ Add additional course</button>
       </div>
       <div id="list">
         <form name="add_courses" action="http://db01.id.ucsb.edu:8019/4DACTION/WEB_SRF_AddCourses" method="post" accept-charset="utf-8" id="add_courses" >
           <!--#4DHTML bl_webContent-->
+          <input type="hidden" name="department" value="<!--#4DHTML vDepartment-->"/>
+          <input type="hidden" name="yq" value="<!--#4DHTML vYearQuarterPeriod-->"/>
         </form>
       </div>      
     <script src="./scripts/main.js"></script>

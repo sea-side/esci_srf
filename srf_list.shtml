@@ -14,7 +14,7 @@
     <![endif]-->
 </head>
 
-<body>
+<body id="body" data-page-name="List Surveys">
  <svg hidden xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" viewBox="0 0 2000 2000" height="100%" width="100%">
   <defs>
    <filter id="greenMatrix">
