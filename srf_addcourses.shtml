@@ -89,6 +89,7 @@
           <!--#4DHTML bl_webContent-->
           <input type="hidden" name="department" value="<!--#4DHTML vDepartment-->"/>
           <input type="hidden" name="yq" value="<!--#4DHTML vYearQuarterPeriod-->"/>
+          <input id="return_page" type="hidden" form="add_courses" name="return_page" value="">  
         </form>
       </div>      
     <script src="./scripts/main.js"></script>

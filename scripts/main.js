@@ -450,7 +450,7 @@
           popAddErrorMessage( inputField, "Instructor: The data doesn't make sense:" + name.match( /([\-&]\s?){2,}/ )[ 0 ] + ".", "error" );
         }
         if ( name.match( /[^A-Za-z \-&]/ ) ) { // Bad characters can be entered via copy/paste.
-          popAddErrorMessage( inputField, "Instructor: Invalid characters: " + name.match( /[^A-Za-z \-&]/g ).join( " , " ), "error" );
+          popAddErrorMessage( inputField, "Instructor: Invalid characters: \"" + name.match( /[^A-Za-z \-&]/g ).join( "\" , \"" )+"\"", "error" );
         }
 
         if ( name.match( /^ / ) ) {
@@ -531,7 +531,7 @@
       if ( element.hasAttribute( "required" ) ) {
         switch (element.nodeName.toLocaleLowerCase()) {
           case "select":
-            if ( element.selectedIndex === 0 ) {
+            if ( element.selectedIndex === 0 && element.value === "") {
               valid = false;
               errMsg = document.createElement( "li" );
               errMsg.textContent = "You must choose a course. This field is required.";

@@ -505,12 +505,23 @@ input[type=radio][name^=stdq_]:checked + label
   padding: 20px;
  
 }
-.popover ul
+.popover  ul
 {
   list-style: none;
   position:relative;
-  left:-5%;  
+  left:-5%;
+  display:block;
 }
+
+.popover  ul > li
+{
+    list-style: none;
+    position: relative;
+    display:block;
+    clear:both;
+}
+
+   
 
 #edit_course
 {
@@ -526,20 +537,20 @@ input[type=radio][name^=stdq_]:checked + label
 ul.popMessageList
 {
   background-color:none;
-  position:absolute; 
-  float:left;
-  top: 2.5em; /* Below the input field */
-  left: 5%;  
-  width: 90%;  
-  padding:0 1em;  
+  position:relative; 
+  left:0;  
+  width: 100%;  
+  padding:0.5em 0;  
   z-index: auto;
   -webkit-margin-before:0;
   -webkit-padding-start: 0;
+  -webkit-padding-before:0;
 }
 ul.popMessageList > li
 {
   opacity:0.9;
-  padding: 0 1em;
+  padding: 0 0.5em 0 2.5em;  
+  text-indent: -2.5em; /* Create hanging indent for multi-line items in list. */
   margin: 2px 0;
   left:0;
           transition: all 0.3s ease-in 1s;
@@ -605,6 +616,14 @@ fieldset
   font-family:Consolas, monaco, courier, monospace;
   font-size:1em;
   text-align:left;
+}
+
+.input_30char
+{
+    width:17.5em;
+    float: left;
+    position:relative;
+    display:block;
 }
 
 input[id*="instructor"]
@@ -733,7 +752,9 @@ input.fixed
 .info::before
 {
   content:'\2139 ';
-  padding-right:12px;
+  margin:0 10px;
+  position:relative;
+  top: 1px;
 }
 
 .valid
@@ -748,7 +769,9 @@ input.fixed
 .valid::before
 {
   content:'\2713 ';
-  padding-right:12px;
+  margin:0 10px;
+  position:relative;
+  top: 1px;
 }
 
 .warning
@@ -762,7 +785,9 @@ input.fixed
 .warning::before
 {
   content:'\26a0 ';
-  padding-right:12px;
+  margin:0 10px;
+  position:relative;
+  top: 1px;
 }
 
 .error
@@ -776,7 +801,9 @@ input.fixed
 .error::before
 {
   content:'\24E7 ';
-  padding-right:12px;
+  margin:0 10px;
+  position:relative;
+  top: 1px;
 }
 
 .input_error
@@ -968,3 +995,8 @@ input.fixed
 
 
 
+                                                                                            
+ 
+                                              
+                         
+        
