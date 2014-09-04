@@ -8,16 +8,19 @@
   </title>
   <meta name="description" content="ESCI Suervey Request Form Submission">
   <meta name="author" content="Instructional Development, UCSB">
-  <link rel="stylesheet" href="./styles/main.css"><!--[if lt IE 9]>
-      <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+  <link rel="stylesheet" href="./styles/main.css">
+  <link rel='stylesheet' media='screen and (min-width: 641px) and (max-width: 900px)' href='./styles/medium900.css'>
+  <link rel='stylesheet' media='screen and (min-width: 1px) and (max-width: 640px)' href='./styles/narrow640.css'>
+  <!--[if lt IE 9]>
+   <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
  </head>
  <body id="body" data-page-name="Submit Surveys">
-  <div id="nav" class="navigation noprint">
+  <nav id="nav" class="navigation noprint">
    <h2>ESCI Survey Request Administration</h2>   
    <input type="button" class="centered" value="Return to home" onclick="location.href=&#39;http://db01.id.ucsb.edu:8019/&#39;">
    <input type="button" value="Print" onclick="window.print()">   
-  </div>
+  </nav>
   <div id="content">
    <div id="heading">
     <h1 class="testing noprint">
@@ -41,5 +44,3 @@
 </script>
  </body>
 </html>
-
-

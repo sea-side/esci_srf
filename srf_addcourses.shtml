@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>ESCI Survey Request | Add Courses </title>
-    <meta charset="utf-8">
-    <meta name="author" content="Instructional Development, UCSB">
-    <base href="http://db01.id.ucsb.edu:8019/survey_request/">
-    <link rel="stylesheet" href="./styles/main.css">
-    <!--[if lt IE 9]>
+   <title>ESCI Survey Request | Add Courses </title>
+   <meta charset="utf-8">
+   <meta name="author" content="Instructional Development, UCSB">
+   <base href="http://db01.id.ucsb.edu:8019/survey_request/">
+   <link rel="stylesheet" href="./styles/main.css">
+   <link rel='stylesheet' media='screen and (min-width: 641px) and (max-width: 900px)' href='./styles/medium900.css'>
+   <link rel='stylesheet' media='screen and (min-width: 1px) and (max-width: 640px)' href='./styles/narrow640.css'>
+   <!--[if lt IE 9]>
     <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+   <![endif]-->
   </head>
   <body id="body" data-page-name="Add New Courses">
     <svg hidden xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" viewBox="0 0 2000 2000" height="100%" width="100%">
@@ -35,14 +37,14 @@
         </filter>
       </defs>
     </svg>
-<!----------------------------------------------------------------------------->
-    <div id="nav" class="navigation noprint">
+    <nav id="nav" class="navigation noprint" role="navigation">
      <h2>ESCI Survey Request Administration</h2>   
-<!----------------------------------------------------------------------------->
-     <!--Need to edit link here-->
-    <button id="btn_return_to_srf" type="button" class="centered" value="Return to Survey Request Course List">
-<!----------------------------------------------------------------------------->     
-    </div>
+    <form id="return" name="return" action="../4DACTION/WEB_SendSurveyRequestForm_new" accept-charset="utf-8" novalidate method="post">
+        <button id="btn_return_to_srf" type="submit" class="centered" value="" name="return" >Return to Survey Request Course List</button>
+        <input type="hidden" name="department" value="<!--#4DHTML vDepartment-->">
+        <input type="hidden" name="yq" value="<!--#4DHTML vYearQuarterPeriod-->">
+      </form>
+    </nav>
     <div id="content">
       <div id="heading">
         <h1 class="testing">TESTING SITE</h1>
@@ -58,13 +60,14 @@
           Survey Request Forms are due by: <!--#4DTEXT vDateDue-->
         </h3>
       </div>
-      <div id="error_msg" class="warning">
+      <div id="error_msg" class="warning" hidden>
         <p id="error_text" class="error"><!--#4DHTML vWEBErrMsg--></p>
       </div>
        <div id="intro" class="instructions">
          <p>Welcome to the ESCI Online Survey Request Management.</p>
          <ul>
-          <li>To request additional ESCI Evaluations, click the plus sign to add additional courses. For each course you add:
+          <li>To request additional ESCI Evaluations, click the plus sign to add additional courses.</li>
+          <li>For each course you add:
            <ol>
             <li>Choose a course from the drop down list for your department.</li>
             <li>Enter the name of the Instructor to be evaluated.</li>
@@ -80,12 +83,12 @@
        <p><!--#4DHTML vConfirmationMsg--></p>
       </div>
        <p id="timestamp"><!--#4DHTML vTimeStamp --></p>
-      <div id="context_nav">
+      <nav id="context_nav">
        <button id="btn_save_add_courses" form="add_courses" type="submit">Save new courses and return to ESCI Survey Request</button>
        <button id="btn_append_course" type="button">+ Add additional course</button>
-      </div>
+      </nav>
       <div id="list">
-        <form name="add_courses" action="http://db01.id.ucsb.edu:8019/4DACTION/WEB_SRF_AddCourses" method="post" accept-charset="utf-8" id="add_courses" >
+        <form name="add_courses" action="../4DACTION/WEB_SRF_AddCourses" method="post" accept-charset="utf-8" id="add_courses" >
           <!--#4DHTML bl_webContent-->
           <input type="hidden" name="department" value="<!--#4DHTML vDepartment-->"/>
           <input type="hidden" name="yq" value="<!--#4DHTML vYearQuarterPeriod-->"/>
@@ -95,4 +98,6 @@
     <script src="./scripts/main.js"></script>
   </body>
 </html>
+
+
 

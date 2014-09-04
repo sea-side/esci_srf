@@ -1,0 +1,184 @@
+/* Small screens */
+@media all and (max-width: 640px) {
+  #content
+  {
+    margin-top: 0;
+  }
+  .instructions
+  {
+    font-size:0.6em;
+    width: 90%;
+    left: 5%;
+    padding: 0 1em;
+    border-radius: 1em;
+  }
+  .instructions > ul
+  {
+    padding-left:0;
+    -webkit-padding-start: 0;
+    list-style: inside;
+  }
+  .instructions > ul > li
+  {
+    padding-bottom: 3px;    
+  }
+  h3
+  {
+    border-radius:10px;
+    border-width:2px;
+    font-size:.7em;
+    overflow-wrap:break word;
+    word-wrap:break word;
+    left:0;
+    letter-spacing:2px;
+    position:relative;
+    text-align:center;
+    text-transform:capitalize;
+    width:100%;
+  }
+  
+  nav#nav.navigation {
+    /* We don't want a fixed menu bar on small screens. let it flow back at the top. */
+    position:static !important;
+    /* On small screens, we are no longer using row direction but columns (2) */
+            flex-direction: column;
+    -webkit-flex-direction: column;
+            justify-content:flex-start;
+    -webkit-justify-content:flex-start;
+    padding-bottom: 12px;
+
+  }
+  
+  nav#heading > *
+  {
+    margin:10px 0;
+  }
+  
+  nav > h2 {
+    position:relative;
+    text-align:center;
+    left:0;
+    right:0;
+    width:100%;
+  }
+  nav > input, nav > button
+  {
+    position: relative;
+    left:20%;
+    width: 60%;
+    top:8px;
+    margin: 4px 0.5em;
+    border:3px solid #75a979;
+    color:#e1ffe4;
+    background-color:#498449;
+    text-align: center;
+    border-radius: 1.5em;
+    font-size: 0.8em;
+    -webkit-appearance: none;
+  }
+  
+  ul.course_stdq
+  {
+            align-items:stretch;
+    -webkit-align-items:stretch;
+  }
+  
+  .course_stdq label
+  {
+    display: inline-block;
+    margin: -5px -2px;
+    padding: 0px  10px 2px 10px ;
+    background-color: #e7e7e7;
+    border-style:solid;
+    border-color: #ddd;
+    border-radius: .3em;
+    position:relative;
+    width:96%;
+    margin-left:2%;
+  }
+   
+  .course_stdq li
+  {    
+            flex:0 1 50%;
+    -webkit-flex:0 1 50%;
+    margin: 8px 0;
+  }
+  .popover
+  {
+    display:none;
+            transition: display 0.5s ease-in-out 0s;
+    -webkit-transition: display 0.5s ease-in-out 0s;
+    border-style: none;
+    position:absolute;
+    z-index: 3;
+    padding: 0;
+    width:100%;
+    height:100%;
+    font-size: 1em;
+  }
+  a.link_editCourse
+  {
+    font-size:initial;
+    padding:18px 1em;
+  }
+  a.link_editCourse:hover
+  {
+    padding-top:15px;
+  }
+  a.link_editCourse:active
+  {
+    border: 3px solid rgba(0,0,0,0.5);
+    padding-top:18px;
+    padding-left:calc(1em + 3px);
+  }
+
+  li.link_editCourse
+  {
+    height:3em;
+  }
+  .course_info li, .course_info li.link_editCourse
+  {    
+            flex: 1 1 47%;
+    -webkit-flex: 1 1 47%; 
+  }
+  #edit_course
+  {
+    font-size: 2em;
+    padding: .5em;    
+  }
+  
+  #edit_messages
+  {
+    min-height: 0;
+  }
+  #edit_messages li
+  {
+    border-radius: 0.2em;
+  }
+  #edit_save_changes
+  {
+    position:absolute;
+    right: 1em;
+    bottom: 3em;
+  }
+  #edit_cancel
+  {
+    position:absolute;
+    right: 1em;
+    bottom: 1em;
+  }  
+}
+ /*Very narrow screens: Single Column display */
+@media all and (max-width: 400px) {
+  .course_info li
+  {
+            flex: 1 1 100%;
+    -webkit-flex: 1 1 100%;
+  }
+  .course_stdq li
+  {    
+            flex:0 1 100%;
+    -webkit-flex:0 1 100%;    
+  }
+
+}

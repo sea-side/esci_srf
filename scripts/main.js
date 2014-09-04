@@ -133,13 +133,13 @@
       }
 
       this.classList.remove( 'input_error' ); // The <input> field
-      this.classList.add('input_valid');
+      this.classList.add( 'input_valid' );
 
       messageList.classList.add( 'fadeout' ); // This seems to work correctly...8/11/14
     } else {
       // Redisplay error messages (that may have been faded out).
       messageList.classList.remove( 'fadeout' ); // This seems to work correctly...8/11/14
-      this.classList.remove('input_valid');
+      this.classList.remove( 'input_valid' );
       this.classList.add( 'input_error' );
     }
     return isValidName; // Either the (corrected) valid name, or false if not valid  
@@ -350,9 +350,9 @@
         }
         break;
       case "select":
-        inputField.classList.remove('input_error');
-        if (this[0].value === "") {
-              this.removeChild(this[0]);
+        inputField.classList.remove( 'input_error' );
+        if ( this[ 0 ].value === "" ) {
+          this.removeChild( this[ 0 ] );
         }
         break;
     }
@@ -450,7 +450,7 @@
           popAddErrorMessage( inputField, "Instructor: The data doesn't make sense:" + name.match( /([\-&]\s?){2,}/ )[ 0 ] + ".", "error" );
         }
         if ( name.match( /[^A-Za-z \-&]/ ) ) { // Bad characters can be entered via copy/paste.
-          popAddErrorMessage( inputField, "Instructor: Invalid characters: \"" + name.match( /[^A-Za-z \-&]/g ).join( "\" , \"" )+"\"", "error" );
+          popAddErrorMessage( inputField, "Instructor: Invalid characters: \"" + name.match( /[^A-Za-z \-&]/g ).join( "\" , \"" ) + "\"", "error" );
         }
 
         if ( name.match( /^ / ) ) {
@@ -483,7 +483,7 @@
     if ( e.preventDefault ) e.preventDefault();
     e.returnValue = false; // For IE compatibility ...
     // Set the return page for the server to send back
-    switch (action) {
+    switch ( action ) {
       case "Add":
         dgi( "return_page" ).value = "srf_addcourses.shtml";
         break;
@@ -491,13 +491,13 @@
       default:
         dgi( "return_page" ).value = "srf_submit.shtml";
         break;
-      
+
     }
     //dgi( "srf_submit" ).disabled = true;
     //dgi( "srf_submit" ).value = "Processing ... Please wait.";
 
     //this.removeEventListener( e.type, submitForm );
-    
+
     dgi( "srf" ).submit();
 
     // Somehow it would be good to re-enable it after submission ... in case the user goes back to the page.
@@ -522,16 +522,16 @@
     errMsg.classList.add( "input_error" );
     errors.appendChild( errMsg );
     // Clear the error-holding <div> of any previous entries
-    while (dgi("error_msg").firstElementChild) {
-      dgi("error_msg").removeChild(dgi("error_msg").firstElementChild);
+    while ( dgi( "error_msg" ).firstElementChild ) {
+      dgi( "error_msg" ).removeChild( dgi( "error_msg" ).firstElementChild );
     }
-    
+
     for ( var i = 0, element; i < formElements.length; i++ ) {
       element = formElements[ i ];
       if ( element.hasAttribute( "required" ) ) {
-        switch (element.nodeName.toLocaleLowerCase()) {
+        switch ( element.nodeName.toLocaleLowerCase() ) {
           case "select":
-            if ( element.selectedIndex === 0 && element.value === "") {
+            if ( element.selectedIndex === 0 && element.value === "" ) {
               valid = false;
               errMsg = document.createElement( "li" );
               errMsg.textContent = "You must choose a course. This field is required.";
@@ -567,8 +567,10 @@
       this.submit();
     } else {
       dgi( "error_msg" ).appendChild( errors );
-      dgi("error_msg").removeAttribute("style"); // It has a default style of 'display:none'.
-      errors.scrollIntoView( true );
+      dgi( "error_msg" ).removeAttribute( "style" ); // It has been given a style of 'display:none' on page load.
+      dgi( "error_msg" ).setAttribute( "style", "height:" +
+                                      String( parseInt( errors.scrollHeight ) + 15 ) + "px" );
+      dgi( "error_msg" ).scrollIntoView( true );
       return false;
     }
   }
@@ -604,6 +606,16 @@
     var stdqDept, stdqRank; // These will be used to match STD Q choices to the course rank and subdept
     var courseRank = dgi( "rank_" + survey_number ).dataset.rankCode;
 
+    // Next, check if Instructor name and/or rank are missing, so as to display the warning messages
+    // Set a blank rank to 'R' (i.e. none).
+    courseRank = courseRank.length === 0 ? "R" : courseRank;
+    // Set a blank instructor name to 'N'.
+    if ( dgi( "instructor_" + survey_number ).textContent.length === 0 ) {
+      courseRank = courseRank === "R" ? "N" + courseRank : "N";
+    }
+    // Ranks 'N', 'R' and "NR" will only match the 'Do Not Evaluate' Questionnaire choice,
+    // but will also trigger the error messages prompting to fill in the missing information.
+
     //First show/hide the appropriate individual questionnaires based on their 'data-esci' attributes
     for ( var i = 0; i < stdqList.length; i++ ) {
       stdqDept = stdqList[ i ].firstElementChild.dataset.esciDepartment;
@@ -615,7 +627,7 @@
       } else {
         //stdqList[ i ].setAttribute( "hidden", true );
         stdqList[ i ].hidden = true;
-        // If the choice being hidden was already checked, set the checked radio back to
+        // If the choice now being hidden was already checked, set the checked radio back to
         // "Do not evaluate" (the default, element[0]) to avoid having an unselected radio group
         if ( stdqList[ i ].firstElementChild.checked ) {
           stdqList[ 0 ].firstElementChild.checked = true;
@@ -663,19 +675,19 @@
       dgi( "new_surveys" ).appendChild( cloneCourse );
       // Kill any existing error messages that my have gotten cloned
       popClearErrorMessages( dgi( "add_instructor_" + currentCloneNumber ) );
-      dgi("add_instructor_"+currentCloneNumber).classList.remove("input_error");
-      dgi("add_instructor_"+currentCloneNumber).classList.remove("input_valid");
-      
+      dgi( "add_instructor_" + currentCloneNumber ).classList.remove( "input_error" );
+      dgi( "add_instructor_" + currentCloneNumber ).classList.remove( "input_valid" );
+
       // Re-assign the event handlers for the child elements in the newly cloned <div>
       dgi( "add_instructor_" + currentCloneNumber ).addEventListener( 'keypress', inputAlpha );
       dgi( "add_instructor_" + currentCloneNumber ).addEventListener( 'blur', setInput, false );
       dgi( "add_instructor_" + currentCloneNumber ).addEventListener( 'change', setInput, false );
       dgi( "add_instructor_" + currentCloneNumber ).addEventListener( 'input', setInput, false );
-      dgi("add_course_" + currentCloneNumber).addEventListener('change',
-          function () {                              
-            popClearErrorMessages.bind((dgi("add_course_" + currentCloneNumber),
-                                        dgi("add_course_" + currentCloneNumber)))();            
-          }, false);
+      dgi( "add_course_" + currentCloneNumber ).addEventListener( 'change',
+        function() {
+          popClearErrorMessages.bind( ( dgi( "add_course_" + currentCloneNumber ),
+            dgi( "add_course_" + currentCloneNumber ) ) )();
+        }, false );
 
       // Clear the instructor name input. The other inputs are <select> type and the clone
       // call does not preserve their .selectedIndex.
@@ -734,10 +746,10 @@
       {
         // Does the main form exist?
         if ( dgi( "srf" ) ) {
-          dgi( "srf" ).addEventListener( 'submit', submitForm.bind(dgi("srf"), "Submit") );
+          dgi( "srf" ).addEventListener( 'submit', submitForm.bind( dgi( "srf" ), "Submit" ) );
         }
-        if (dgi("add_submit")) {
-          dgi("add_submit").addEventListener( 'click', submitForm.bind(dgi("srf"),"Add") );
+        if ( dgi( "add_submit" ) ) {
+          dgi( "add_submit" ).addEventListener( 'click', submitForm.bind( dgi( "srf" ), "Add" ) );
         }
 
         // Event handlers for the <a>:"Edit Course Information" elements. - 7/21/14 Tested OK
@@ -795,12 +807,12 @@
           dgi( "add_instructor_1" ).addEventListener( 'blur', setInput, false );
           dgi( "add_instructor_1" ).addEventListener( 'change', setInput, false );
           dgi( "add_instructor_1" ).addEventListener( 'input', setInput, false );
-          
+
           // This filter simply clears validation error messages on input change
-      dgi("add_course_1").addEventListener('change',
-          function () {                              
-            popClearErrorMessages.bind((dgi("add_course_1"), dgi("add_course_1")))();            
-          }, false);
+          dgi( "add_course_1" ).addEventListener( 'change',
+            function() {
+              popClearErrorMessages.bind( ( dgi( "add_course_1" ), dgi( "add_course_1" ) ) )();
+            }, false );
 
 
           break;
@@ -814,14 +826,20 @@
   // First check what to display, if there is an errror message
   var errMsg = dgi( "error_text" );
   // If there is no error to report, hide the error block
+  errMsg.textContent = errMsg.textContent.trim(); // Kill extra HTML-source whitespace
   if ( errMsg.textContent === undefined || errMsg.textContent === "" ) {
-    dgi( "error_msg" ).style.display = "none";
+    //dgi( "error_msg" ).style.display = "none";
+    dgi("error_msg").hidden = true;
   } // Else hide the other elements
   else {
-    if ( dgi( "error_msg" ) ) dgi( "error_msg" ).style.display = "block";
-    if ( dgi( "heading" ) ) dgi( "heading" ).style.display = "none";
-    if ( dgi( "intro" ) ) dgi( "intro" ).style.display = "none";
-    if ( dgi( "list" ) ) dgi( "list" ).style.display = "none";
+    dgi("error_msg").hidden = false;
+    if ( dgi( "error_msg" ) ) dgi( "error_msg" ).style.display = "block";    
+    //if ( dgi( "heading" ) ) dgi( "heading" ).style.display = "none";
+    //if ( dgi( "intro" ) ) dgi( "intro" ).style.display = "none";
+    //if ( dgi( "list" ) ) dgi( "list" ).style.display = "none";
+    if ( dgi( "heading" ) ) dgi( "heading" ).hidden = true;
+    if ( dgi( "intro" ) ) dgi( "intro" ).hidden = true;
+    if ( dgi( "list" ) ) dgi( "list" ).hidden = true;
   }
 
   // Add fadeout for any '.valid' elements, once the page has loaded
@@ -831,4 +849,3 @@
   ////////////////////////////////////////////////////////////////////////////////
 
 } )( window, document );
-

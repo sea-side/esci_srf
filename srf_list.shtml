@@ -9,9 +9,11 @@
   <meta name="description" content="ESCI Suervey Request Form List">
   <meta name="author" content="Instructional Development, UCSB">
   <link rel="stylesheet" href="./styles/main.css">
-   <!--[if lt IE 9]>
-      <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+  <link rel='stylesheet' media='screen and (min-width: 641px) and (max-width: 900px)' href='./styles/medium900.css'>
+  <link rel='stylesheet' media='screen and (min-width: 1px) and (max-width: 640px)' href='./styles/narrow640.css' >
+  <!--[if lt IE 9]>
+   <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
 </head>
 
 <body id="body" data-page-name="List Surveys">
@@ -38,31 +40,26 @@
    </filter>
   </defs>
  </svg>
- <div id="nav" class="navigation">
+ <nav id="nav" class="navigation" role="navigation">
+<!--  Add other navigation elements, links to parent pages,etc, in this div-->
   <h2>ESCI Survey Request Administration</h2>
   <input id="add_submit" type="submit" form="srf" value="Add Additional ESCI Surveys..." >
   <input id="srf_submit" type="submit" form="srf" value="Submit Changes">
   <input id="return_page" type="hidden" form="srf" name="return_page" value="">  
- </div>
+ </nav>
 
   <div id="content">
     <div id="heading">
       <h1 class="testing">TESTING SITE</h1>
-
-      
       <h3 class="ghosted">For Academic Quarter: <!--4DTEXT vCurrentQuarter-->
       <br>
       <span class="department"><!--#4DTEXT vDeptTitle--></span></h3>
-
       <h3 class="important shaded">Survey Request Forms are due by: <!--#4DTEXT vDateDue--></h3>
     </div>
-
-    <div id="error_msg" class="warning">
-      <p id="error_text" class="error"><!--#4DHTML vWEBErrMsg--></p>
+    <div id="error_msg" class="warning" hidden>
+      <p id="error_text" class="error" ><!--#4DHTML vWEBErrMsg--></p>
     </div>
-
     <div id="intro" class="instructions"><!--#4DHTML vInstructions--></div>
-
     <div id="list">       
       <form id="srf" name="srf" action="../4DACTION/WEB_SetSurveyRequestData/<!--#4DTEXT vDepartment-->" method="post" accept-charset="utf-8">
        <!--#4DHTML bl_SurveyRequestForm -->
