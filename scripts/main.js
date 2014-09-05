@@ -752,7 +752,7 @@
           dgi( "add_submit" ).addEventListener( 'click', submitForm.bind( dgi( "srf" ), "Add" ) );
         }
 
-        // Event handlers for the <a>:"Edit Course Information" elements. - 7/21/14 Tested OK
+        // Event handlers for the <a>:"Edit Course Information" elements.
         // Survey Number bound as argument; second  parameter should be automatically passed as the Event by the browser.
         for ( var i = 0; i < aEditCourseGroup.length; i++ ) {
           aEditCourseGroup[ i ].addEventListener( 'click', showPopOver.bind( null, aEditCourseGroup[ i ].id.replace( "editCourse_", "" ) ), false );
