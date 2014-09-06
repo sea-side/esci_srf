@@ -16,7 +16,7 @@
   <![endif]-->
 </head>
 
-<body id="body" data-page-name="List Surveys Flex">
+<body id="body" data-page-name="List Surveys Table">
  <svg hidden xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" viewBox="0 0 2000 2000" height="100%" width="100%">
   <defs>
    <filter id="greenMatrix">
@@ -67,6 +67,7 @@
     </div>
   </div>
   <!--#4DHTML t_popOver -->
+  <!--#4DHTML t_stdqListMaster -->
   <script src="./scripts/main.js"></script>  
 </body>
 </html>

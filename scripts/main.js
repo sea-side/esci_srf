@@ -17,27 +17,6 @@
 
   'use strict';
 
-
-  ////////////////////////////////////////////////////////////////////////////////
-  ///                           * Selectors *                            ///
-  ////////////////////////////////////////////////////////////////////////////////
-
-  // Get all the <a> links for "edit course information" and assign event handlers here
-  var aEditCourseGroup = document.querySelectorAll( '.link_editCourse' );
-  //Get all the sub department groups (if any)
-  var subdeptULGroup = document.querySelectorAll( '.course_subdept' ); // get the radio button group of sub departments
-
-  // Screen dimensions for centering
-  var myWidth = 0;
-  var myHeight = 0;
-  var myScroll = 0;
-  var myScrollWidth = 0;
-  var myScrollHeight = 0;
-
-  if ( window.jQuery ) {
-    window.jQuery.noConflict();
-  }
-
   // create a global '$' querying variable
   window.$ = function( selector, all ) {
     if ( all ) {
@@ -61,7 +40,25 @@
   // Shortcut for common function
   var dgi = document.getElementById.bind( document );
 
+  ////////////////////////////////////////////////////////////////////////////////
+  ///                           * Selectors *                            ///
+  ////////////////////////////////////////////////////////////////////////////////
 
+  // Get all the <a> links for "edit course information" and assign event handlers here
+  var aEditCourseGroup = $( '.link_editCourse', true );
+  //Get all the sub department groups (if any)
+  var subdeptULGroup = $( '.course_subdept', true ); // get the radio button group of sub departments
+  var subdeptSelectors = $( '.select_subdept', true ); // get the <select> elements that have the sub department choices 
+  // Screen dimensions for centering
+  var myWidth = 0;
+  var myHeight = 0;
+  var myScroll = 0;
+  var myScrollWidth = 0;
+  var myScrollHeight = 0;
+
+  if ( window.jQuery ) {
+    window.jQuery.noConflict();
+  }
 
   ////////////////////////////////////////////////////////////////////////////////
   ///                              * Methods *                               ///
@@ -315,11 +312,17 @@
       // Find which subdept (if any) is selected
       var subdept = "";
       if ( dgi( "subdeptSection_" + survey_number ) ) {
+        // Radio group on Flexbox page
         subdept = $( "[name=subdept_" + survey_number + "]:checked" ).value;
+        // Update the STD Q list on save
+        updateSTDQList( survey_number, subdept );
+      } else if ( dgi( "subdeptSelector_" + survey_number ) ) {
+        // Select element on table page
+        subdept = dgi( "subdeptSelector_" + survey_number ).value;
+        // Update the STD Q Selector on save
+        updateSTDQSelector( survey_number, subdept );
       }
 
-      // Update the STD Q list on save
-      updateSTDQList( survey_number, subdept );
 
       // Clear any error messages from the message <section>
       popClearErrorMessages( dgi( "edit_instructor" ) );
@@ -569,14 +572,15 @@
       dgi( "error_msg" ).appendChild( errors );
       dgi( "error_msg" ).removeAttribute( "style" ); // It has been given a style of 'display:none' on page load.
       dgi( "error_msg" ).setAttribute( "style", "height:" +
-                                      String( parseInt( errors.scrollHeight ) + 15 ) + "px" );
+        String( parseInt( errors.scrollHeight ) + 15 ) + "px" );
       dgi( "error_msg" ).scrollIntoView( true );
       return false;
     }
   }
 
+  // Flexbox page with radio buttons
   // This function only changes the Sub Department variables. Then it calls updateSTDQList.
-  function changeSubDepartment( survey_number, subdept ) {
+  function clickSubDepartment( survey_number, subdept ) {
 
     // Skip the whole method if there is no subdept <section>. Method should never be called this way.
     if ( dgi( "subdeptSection_" + survey_number ) ) {
@@ -596,7 +600,7 @@
     }
   }
 
-
+  // For the Flexbox page with radio groups
   function updateSTDQList( survey_number, subdept ) { // subdept param should be a String
     // Re-type as RegExp, and add the '|all' to cover stdq choices that are fit for all subdepartments
     subdept = RegExp( subdept + "|all" );
@@ -634,6 +638,73 @@
         }
       }
     }
+  }
+
+  //Table page with <select> menus
+  // This function only changes the Sub Department variables. Then it calls updateSTDQList.
+  function selectSubDepartment( e ) {
+    e = e || window.event;
+    if ( e.preventDefault ) e.preventDefault();
+
+    var survey_number = this.id.replace( "subdeptSelector_", "" );
+    var subdept = this.value;
+    updateSTDQSelect( survey_number, subdept );
+  }
+
+  // For the Table page with <select> elements
+  function updateSTDQSelect( survey_number, subdept ) {
+    // Re-type as RegExp, and add the '|all' to cover stdq choices that are fit for all subdepartments
+    subdept = RegExp( subdept + "|all" );
+
+    // Due to cross-browser differences we cannot simple show/hide various <option>s in the
+    // <select> element, as we do with the radio button version. Instead, on each change necessitating
+    // update, we replace the original <select> element with a clone from a hidden "Master" <select>.
+    // Then we strip out the inappropriate choices.
+
+    var newSTDQSelect = dgi( "master_select" ).cloneNode( true );
+    var oldSTDQSelect = dgi("stdqSelector_"+survey_number);
+    var oldSelected = oldSTDQSelect.value;
+
+    // The <options> of the <select> element are the different STD Q choices shown
+    var stdqOptions = newSTDQSelect.options;
+
+    var stdqDept, stdqRank; // These will be used to match STD Q choices to the course rank and subdept
+    var courseRank = dgi( "rank_" + survey_number ).dataset.rankCode;
+
+    // Next, check if Instructor name and/or rank are missing, so as to display the warning messages
+    // Set a blank rank to 'R' (i.e. none).
+    courseRank = courseRank.length === 0 ? "R" : courseRank;
+    // Set a blank instructor name to 'N'.
+    if ( dgi( "instructor_" + survey_number ).textContent.length === 0 ) {
+      courseRank = courseRank === "R" ? "N" + courseRank : "N";
+    }
+    // Ranks 'N', 'R' and "NR" will only match the 'Do Not Evaluate' Questionnaire choice,
+    // and will also trigger the corresponding error message prompting to fill in the missing information.
+
+    //First show/hide the appropriate individual questionnaires based on their 'data-esci' attributes
+    for ( var i = 0; i < stdqOptions.length; i++ ) {
+      stdqDept = stdqOptions[ i ].dataset.esciDepartment;
+      stdqRank = stdqOptions[ i ].dataset.esciRank;
+
+      if ( stdqOptions[ i ].value === oldSelected ) {
+        stdqOptions[ i ].selected = true;
+      }
+
+      // Each stdq must match on both rank and subdept to be displayed to the user.
+      // Since we are working from a "Master" element, we just delete those that don't match.
+      if ( !( subdept.test( stdqDept ) && ( stdqRank.indexOf( courseRank ) ) != -1 ) ) {
+        // If the <option> now being removed was previously selected, reset the selectedIndex back to zero.
+        if ( stdqOptions[ i ].selected ) {
+          newSTDQSelect.selectedIndex = 0;
+        }
+        stdqOptions.remove( i );
+      }
+
+    }
+    // Finally replace the old <select> with the new
+    oldSTDQSelect.parentNode.replaceChild(newSTDQSelect,oldSTDQSelect);
+    // and make it visible
+    newSTDQSelect.hidden = false;
   }
 
   // Clones the 'template' <div> with children; renames the variables appropriately;
@@ -742,7 +813,7 @@
 
   var _page_type = dgi( "body" ).dataset.pageName;
   switch ( _page_type ) {
-    case "List Surveys":
+    case "List Surveys Flex":
       {
         // Does the main form exist?
         if ( dgi( "srf" ) ) {
@@ -777,8 +848,45 @@
           subdeptRadios = subdeptULGroup[ j ].children; // The children are <li> elements. Each <li> has a single <input> child.
           for ( var i = 0, subdept; i < subdeptRadios.length; i++ ) {
             subdept = subdeptRadios[ i ].firstElementChild.value;
-            subdeptRadios[ i ].addEventListener( 'click', changeSubDepartment.bind( null, survey_number, subdept ) );
+            subdeptRadios[ i ].addEventListener( 'click', clickSubDepartment.bind( null, survey_number, subdept ) );
           }
+        }
+
+        break;
+      }
+      // Some of he event handling logic is different on the Table formatted version of the page
+    case "List Surveys Table":
+      {
+        // Does the main form exist?
+        if ( dgi( "srf" ) ) {
+          dgi( "srf" ).addEventListener( 'submit', submitForm.bind( dgi( "srf" ), "Submit" ) );
+        }
+        if ( dgi( "add_submit" ) ) {
+          dgi( "add_submit" ).addEventListener( 'click', submitForm.bind( dgi( "srf" ), "Add" ) );
+        }
+
+
+        // Event handlers for the <a>:"Edit Course Information" elements.
+        // Survey Number bound as argument; second  parameter should be automatically passed as the Event by the browser.
+        for ( var i = 0; i < aEditCourseGroup.length; i++ ) {
+          aEditCourseGroup[ i ].addEventListener( 'click', showPopOver.bind( null, aEditCourseGroup[ i ].id.replace( "editCourse_", "" ) ), false );
+        }
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // These 4 listeners are OK to remain through the life of the page.
+        if ( dgi( "edit_instructor" ) ) {
+          dgi( "edit_instructor" ).addEventListener( 'keypress', inputAlpha );
+          dgi( "edit_instructor" ).addEventListener( 'blur', setInput, false );
+          dgi( "edit_instructor" ).addEventListener( 'change', setInput, false );
+          dgi( "edit_instructor" ).addEventListener( 'input', setInput, false );
+        }
+        ////////////////////////////////////////////////////////////////////////////////
+
+        // Loop over each SubDepartment select element
+        for ( var j = 0, survey_number; j < subdeptSelectors.length; j++ ) {
+          // Extract the Survey Number from the id field
+          survey_number = subdeptSelectors[ j ].id.replace( "subdeptSelector_", "" );
+          subdeptSelectors[ j ].addEventListener( 'change', selectSubDepartment, false );
         }
 
         break;
@@ -829,11 +937,11 @@
   errMsg.textContent = errMsg.textContent.trim(); // Kill extra HTML-source whitespace
   if ( errMsg.textContent === undefined || errMsg.textContent === "" ) {
     //dgi( "error_msg" ).style.display = "none";
-    dgi("error_msg").hidden = true;
+    dgi( "error_msg" ).hidden = true;
   } // Else hide the other elements
   else {
-    dgi("error_msg").hidden = false;
-    if ( dgi( "error_msg" ) ) dgi( "error_msg" ).style.display = "block";    
+    dgi( "error_msg" ).hidden = false;
+    if ( dgi( "error_msg" ) ) dgi( "error_msg" ).style.display = "block";
     //if ( dgi( "heading" ) ) dgi( "heading" ).style.display = "none";
     //if ( dgi( "intro" ) ) dgi( "intro" ).style.display = "none";
     //if ( dgi( "list" ) ) dgi( "list" ).style.display = "none";
