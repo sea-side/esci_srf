@@ -17,9 +17,11 @@
  </head>
  <body id="body" data-page-name="Submit Surveys">
   <nav id="nav" class="navigation noprint">
-   <h2>ESCI Survey Request Administration</h2>   
-   <input type="button" class="centered" value="Return to home" onclick="location.href=&#39;http://db01.id.ucsb.edu:8019/&#39;">
-   <input type="button" value="Print" onclick="window.print()">   
+   <h2>ESCI Survey Request Administration</h2>
+   <div id="nav_buttons">
+    <input type="button" class="centered" value="Return to home" onclick="location.href=&#39;http://db01.id.ucsb.edu:8019/&#39;">
+    <input type="button" value="Print" onclick="window.print()">   
+   </div>
   </nav>
   <div id="content">
    <div id="heading">

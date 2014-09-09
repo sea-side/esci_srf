@@ -10,7 +10,7 @@
   <meta name="author" content="Instructional Development, UCSB">
   <link rel="stylesheet" href="./styles/main.css">
   <link rel='stylesheet' media='screen and (min-width: 641px) and (max-width: 900px)' href='./styles/medium900.css'>
-  <link rel='stylesheet' media='screen and (min-width: 1px) and (max-width: 640px)' href='./styles/narrow640.css' >
+  <link rel='stylesheet' media='screen and (min-width: 1px) and (max-width: 700px)' href='./styles/narrow640.css' >
   <!--[if lt IE 9]>
    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
   <![endif]-->
@@ -43,9 +43,12 @@
  <nav id="nav" class="navigation" role="navigation">
 <!--  Add other navigation elements, links to parent pages,etc, in this div-->
   <h2>ESCI Survey Request Administration</h2>
-  <input id="add_submit" type="submit" form="srf" value="Add Additional ESCI Surveys..." >
-  <input id="srf_submit" type="submit" form="srf" value="Submit Changes">
-  <input id="return_page" type="hidden" form="srf" name="return_page" value="">  
+  <div id="nav_buttons">
+   <input id="add_submit" type="submit" form="srf" value="Add Additional ESCI Surveys..." >
+   <input id="switch_display" name="switch_display" type="submit" form="srf" value="Switch to Table View">
+   <input id="srf_submit" type="submit" form="srf" value="Submit Changes">
+   <input id="return_page" type="hidden" form="srf" name="return_page" value="">
+  </div>
  </nav>
 
   <div id="content">
@@ -61,8 +64,11 @@
     </div>
     <div id="intro" class="instructions"><!--#4DHTML vInstructions--></div>
     <div id="list">       
-      <form id="srf" name="srf" action="../4DACTION/WEB_SetSurveyRequestData/<!--#4DTEXT vDepartment-->" method="post" accept-charset="utf-8">
+      <form id="srf" name="srf" action="../4DACTION/WEB_SRF_Submit/<!--#4DTEXT vDepartment-->" method="post" accept-charset="utf-8">
        <!--#4DHTML bl_SurveyRequestForm -->
+       <input id="display_style" type="hidden" name="display_style" value="flex">  
+       <input type="hidden" name="department" value="<!--#4DHTML vDepartment-->">
+       <input type="hidden" name="yq" value="<!--#4DHTML vYearQuarterPeriod-->">
       </form>
     </div>
   </div>

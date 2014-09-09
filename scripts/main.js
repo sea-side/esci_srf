@@ -45,7 +45,7 @@
   ////////////////////////////////////////////////////////////////////////////////
 
   // Get all the <a> links for "edit course information" and assign event handlers here
-  var aEditCourseGroup = $( '.link_editCourse', true );
+  var aEditCourseGroup = $( 'a.link_editCourse', true );
   //Get all the sub department groups (if any)
   var subdeptULGroup = $( '.course_subdept', true ); // get the radio button group of sub departments
   var subdeptSelectors = $( '.select_subdept', true ); // get the <select> elements that have the sub department choices 
@@ -165,7 +165,7 @@
 
     popEditBox.style.display = "block";
     popEditBox.style.left = ( ( myWidth / 2 ) - ( popEditBox.offsetWidth / 2 ) ) + "px";
-    popEditBox.style.top = ( ( myHeight / 2 ) - ( popEditBox.offsetHeight / 2 ) + myScroll ) + "px";
+    popEditBox.style.top = ( ( myHeight / 2 ) - ( popEditBox.offsetHeight / 2 ) ) + "px";
 
     dgi( "edit_course" ).textContent = dgi( "course_" + surveyNumber ).textContent;
     // Focus the instructor name text input
@@ -200,9 +200,10 @@
       } );
 
     ////////////////////////////////////////////////////////////////////////////////
-    // This EventListener (to save changes) needs to be changed each time (from any previous calls to this function),
-    // and then reset with the correct parameters. So we create it in a local variable that calls the
-    // real processing function with the necessary parameters, and then unbinds itself.
+    // This EventListener (to save changes) needs to be changed each time
+    // (from any previous calls to this function), and then reset with the correct parameters.
+    // So we create it in a local variable that calls the real processing function with
+    // the necessary parameters, and then unbinds itself.
     // The function is bound to the text <input> to catch "enter" keystrokes
     // and to the "Save changes" link to catch clicks. Both are bound/unbound dynamically.
     var saveCourseBound = function( e ) {
@@ -232,7 +233,8 @@
 
 
     dgi( "edit_cancel" ).addEventListener( 'mousedown',
-      // This prevents the blur event from firing on the name input field if 'cancel' is clicked while the name input has focus
+      // This prevents the blur event from firing on the name input field if 'cancel'
+      // is clicked while the name input has focus
       function( e ) {
         e = e || window.event;
         if ( e.preventDefault ) e.preventDefault();
@@ -251,9 +253,7 @@
       }
     } );
 
-    dgi( 'screen' ).style.display = "block";
-    dgi( 'screen' ).style.width = myScrollWidth + "px";
-    dgi( 'screen' ).style.height = myScrollHeight + "px";
+    dgi( 'screen' ).style.display = "block";    
   }
 
   function saveEditCourse( survey_number, sel_ranks, sel_types, e ) {
@@ -320,7 +320,7 @@
         // Select element on table page
         subdept = dgi( "subdeptSelector_" + survey_number ).value;
         // Update the STD Q Selector on save
-        updateSTDQSelector( survey_number, subdept );
+        updateSTDQSelect( survey_number, subdept );
       }
 
 
@@ -487,8 +487,21 @@
     e.returnValue = false; // For IE compatibility ...
     // Set the return page for the server to send back
     switch ( action ) {
-      case "Add":
+      case "Add Flex":
         dgi( "return_page" ).value = "srf_addcourses.shtml";
+        dgi( "display_style" ).value = "flex";
+        break;
+      case "Add Table":
+        dgi( "return_page" ).value = "srf_addcourses.shtml";
+        dgi( "display_style" ).value = "table";
+        break;
+      case "Switch Flex":
+        dgi("return_page").value = "srf_list.shtml";
+        dgi("display_style").value = "flex";
+        break;
+      case "Switch Table":
+        dgi("return_page").value = "srf_table.shtml";
+        dgi("display_style").value = "table";
         break;
       case "Submit":
       default:
@@ -496,17 +509,8 @@
         break;
 
     }
-    //dgi( "srf_submit" ).disabled = true;
-    //dgi( "srf_submit" ).value = "Processing ... Please wait.";
-
-    //this.removeEventListener( e.type, submitForm );
 
     dgi( "srf" ).submit();
-
-    // Somehow it would be good to re-enable it after submission ... in case the user goes back to the page.
-    // This code never seems to get executed however....
-    //dgi("srf_submit").disabled = false;
-    //dgi("srf_submit").value = "Submit Changes";
   }
 
   function submitAddCourses( e ) {
@@ -570,6 +574,7 @@
       this.submit();
     } else {
       dgi( "error_msg" ).appendChild( errors );
+      dgi( "error_msg" ).hidden = false; // Remove default 'hidden' attribute
       dgi( "error_msg" ).removeAttribute( "style" ); // It has been given a style of 'display:none' on page load.
       dgi( "error_msg" ).setAttribute( "style", "height:" +
         String( parseInt( errors.scrollHeight ) + 15 ) + "px" );
@@ -662,7 +667,7 @@
     // Then we strip out the inappropriate choices.
 
     var newSTDQSelect = dgi( "master_select" ).cloneNode( true );
-    var oldSTDQSelect = dgi("stdqSelector_"+survey_number);
+    var oldSTDQSelect = dgi( "stdqSelector_" + survey_number );
     var oldSelected = oldSTDQSelect.value;
 
     // The <options> of the <select> element are the different STD Q choices shown
@@ -682,7 +687,10 @@
     // and will also trigger the corresponding error message prompting to fill in the missing information.
 
     //First show/hide the appropriate individual questionnaires based on their 'data-esci' attributes
-    for ( var i = 0; i < stdqOptions.length; i++ ) {
+    var removeList = [];
+    // We go through the <options> list in reverse, since each removal will dynamically adjust
+    // the size, and hence the positioning of the remaining elements.
+    for ( var i = stdqOptions.length - 1; i >= 0; --i ) {
       stdqDept = stdqOptions[ i ].dataset.esciDepartment;
       stdqRank = stdqOptions[ i ].dataset.esciRank;
 
@@ -697,12 +705,16 @@
         if ( stdqOptions[ i ].selected ) {
           newSTDQSelect.selectedIndex = 0;
         }
+        // We don't remove them here, since it dynamically changes the size/length of the HTMLOptionsCollection.
         stdqOptions.remove( i );
       }
-
     }
+
+    // Reset the 'id' and 'name' attributes on the new clone to replace the old one
+    newSTDQSelect.id = oldSTDQSelect.id;
+    newSTDQSelect.name = oldSTDQSelect.name;
     // Finally replace the old <select> with the new
-    oldSTDQSelect.parentNode.replaceChild(newSTDQSelect,oldSTDQSelect);
+    oldSTDQSelect.parentNode.replaceChild( newSTDQSelect, oldSTDQSelect );
     // and make it visible
     newSTDQSelect.hidden = false;
   }
@@ -820,9 +832,12 @@
           dgi( "srf" ).addEventListener( 'submit', submitForm.bind( dgi( "srf" ), "Submit" ) );
         }
         if ( dgi( "add_submit" ) ) {
-          dgi( "add_submit" ).addEventListener( 'click', submitForm.bind( dgi( "srf" ), "Add" ) );
+          dgi( "add_submit" ).addEventListener( 'click', submitForm.bind( dgi( "srf" ), "Add Flex" ) );
         }
-
+        if ( dgi( "switch_display" ) ) {
+          dgi( "switch_display" ).addEventListener( 'click', submitForm.bind( dgi( "srf" ), "Switch Table" ) );
+        }
+        
         // Event handlers for the <a>:"Edit Course Information" elements.
         // Survey Number bound as argument; second  parameter should be automatically passed as the Event by the browser.
         for ( var i = 0; i < aEditCourseGroup.length; i++ ) {
@@ -862,9 +877,11 @@
           dgi( "srf" ).addEventListener( 'submit', submitForm.bind( dgi( "srf" ), "Submit" ) );
         }
         if ( dgi( "add_submit" ) ) {
-          dgi( "add_submit" ).addEventListener( 'click', submitForm.bind( dgi( "srf" ), "Add" ) );
+          dgi( "add_submit" ).addEventListener( 'click', submitForm.bind( dgi( "srf" ), "Add Table" ) );
         }
-
+        if ( dgi( "switch_display" ) ) {
+          dgi( "switch_display" ).addEventListener( 'click', submitForm.bind( dgi( "srf" ), "Switch Flex" ) );
+        }
 
         // Event handlers for the <a>:"Edit Course Information" elements.
         // Survey Number bound as argument; second  parameter should be automatically passed as the Event by the browser.
@@ -900,6 +917,8 @@
     case "Add New Courses":
       {
 
+        var displayStyle = dgi( "display_style" ).value;
+
         dgi( "add_courses" ).addEventListener( 'submit', submitAddCourses, false );
 
         if ( dgi( "btn_append_course" ) ) {
@@ -921,10 +940,21 @@
             function() {
               popClearErrorMessages.bind( ( dgi( "add_course_1" ), dgi( "add_course_1" ) ) )();
             }, false );
-
-
-          break;
         }
+
+        // Set the correct return page based on display type: table | flex
+        if ( document.forms[ "return" ] ) {
+          switch ( displayStyle ) {
+            case "flex":
+              document.forms[ "return" ].action = '../4DACTION/WEB_SRF_SendFlex';
+              break;
+            case "table":
+              document.forms[ "return" ].action = '../4DACTION/WEB_SRF_SendTable';
+              break;
+          }
+        }
+
+        break;
       }
   }
 

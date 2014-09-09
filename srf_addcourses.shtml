@@ -38,12 +38,14 @@
       </defs>
     </svg>
     <nav id="nav" class="navigation noprint" role="navigation">
-     <h2>ESCI Survey Request Administration</h2>   
-    <form id="return" name="return" action="../4DACTION/WEB_SendSurveyRequestForm_new" accept-charset="utf-8" novalidate method="post">
-        <button id="btn_return_to_srf" type="submit" class="centered" value="" name="return" >Return to Survey Request Course List</button>
-        <input type="hidden" name="department" value="<!--#4DHTML vDepartment-->">
-        <input type="hidden" name="yq" value="<!--#4DHTML vYearQuarterPeriod-->">
-      </form>
+     <h2>ESCI Survey Request Administration</h2> 
+     <form id="return" name="return" action="../4DACTION/WEB_SRF_SendFlex" accept-charset="utf-8" novalidate method="post">
+      <div id="nav_buttons">
+       <button id="btn_return_to_srf" type="submit" class="centered" value="" name="return" >Return to Survey Request Course List</button>
+       <input type="hidden" name="department" value="<!--#4DHTML vDepartment-->">
+       <input type="hidden" name="yq" value="<!--#4DHTML vYearQuarterPeriod-->">
+      </div>
+     </form>
     </nav>
     <div id="content">
       <div id="heading">
@@ -92,7 +94,8 @@
           <!--#4DHTML bl_webContent-->
           <input type="hidden" name="department" value="<!--#4DHTML vDepartment-->"/>
           <input type="hidden" name="yq" value="<!--#4DHTML vYearQuarterPeriod-->"/>
-          <input id="return_page" type="hidden" form="add_courses" name="return_page" value="">  
+          <input id="return_page" type="hidden" form="add_courses" name="return_page" value="">
+          <input id="display_style" type="hidden" form="add_courses" name="display_style" value="<!--#4DHTML vDisplayStyle-->">  
         </form>
       </div>      
     <script src="./scripts/main.js"></script>

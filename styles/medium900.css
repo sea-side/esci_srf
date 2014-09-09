@@ -4,18 +4,21 @@
     /* When on medium sized screens, we center it by evenly distributing empty space around items */
             justify-content: space-between;
     -webkit-justify-content: space-between;
-    font-size: .7em;
+    font-size: .9em;
   }
-  nav > h2 {
+  nav#nav > h2 {
     letter-spacing: 2px;
-    font-weight: 500;
-    position:relative;
-    left:20px;
-    top:6px;
+    font-weight: 500;    
+    left:10px;
+    top:10px;    
   }
-  nav > input, nav > button
+  div#nav_buttons
   {
-    margin-right:20px;
+    width:60%;
+  }
+  div#nav_buttons > input, div#nav_buttons > button
+  {
+    margin-right:10px;
   }
   .instructions
   {    
@@ -87,3 +90,15 @@
     border-radius: 0.4em;
   }  
 }
+
+@media all and (max-width: 768px) {
+  div#nav_buttons *
+  {
+    font-size: 0.7em;
+    letter-spacing: -0.5px;
+    margin-right:2px;
+    border-width: 0px;
+  }
+}
+
+

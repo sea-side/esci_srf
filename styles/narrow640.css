@@ -1,5 +1,4 @@
 /* Small screens */
-@media all and (max-width: 640px) {
   #content
   {
     margin-top: 0;
@@ -39,42 +38,47 @@
   
   nav#nav.navigation {
     /* We don't want a fixed menu bar on small screens. let it flow back at the top. */
-    position:static !important;
-    /* On small screens, we are no longer using row direction but columns (2) */
-            flex-direction: column;
-    -webkit-flex-direction: column;
-            justify-content:flex-start;
-    -webkit-justify-content:flex-start;
-    padding-bottom: 12px;
-
+    position:static !important;    
   }
   
-  nav#heading > *
-  {
-    margin:10px 0;
-  }
-  
-  nav > h2 {
+  nav#nav > h2 {
     position:relative;
     text-align:center;
     left:0;
     right:0;
     width:100%;
+    letter-spacing:4px;    
   }
-  nav > input, nav > button
+  div#nav_buttons
   {
+    width:100%;
+    left:0;
     position: relative;
-    left:20%;
-    width: 60%;
+            justify-content:center;
+    -webkit-justify-content:center;
+            align-items:center;
+    -webkit-align-items:center;
+    margin: 10px 0;
+  }
+  div#nav_buttons > input, div#nav_buttons > button
+  {
+            flex:1 1 30%;
+    -webkit-flex:1 1 30%;
+    position: relative;
     top:8px;
-    margin: 4px 0.5em;
+    margin: 4px;
     border:3px solid #75a979;
     color:#e1ffe4;
     background-color:#498449;
     text-align: center;
-    border-radius: 1.5em;
-    font-size: 0.8em;
+    border-radius: 1em;
+    font-size: 0.7em;
     -webkit-appearance: none;
+  }
+  
+  div#heading > *
+  {
+    margin:10px 0;
   }
   
   ul.course_stdq
@@ -82,26 +86,37 @@
             align-items:stretch;
     -webkit-align-items:stretch;
   }
-  
-  .course_stdq label
+    
+  .course_stdq li > label
   {
     display: inline-block;
-    margin: -5px -2px;
-    padding: 0px  10px 2px 10px ;
+    margin: 0 3px;
     background-color: #e7e7e7;
     border-style:solid;
     border-color: #ddd;
     border-radius: .3em;
     position:relative;
-    width:96%;
-    margin-left:2%;
+    width:100%;
+    height:100%;
   }
    
   .course_stdq li
   {    
-            flex:0 1 50%;
-    -webkit-flex:0 1 50%;
-    margin: 8px 0;
+            flex:0 1 calc(50% - 6px);
+    -webkit-flex:0 1 calc(50% - 6px);
+    margin: 3px;
+    width:100%;
+  }
+  .course_subdept li
+  {    
+            flex:0 1 calc(50% - 6px);
+    -webkit-flex:0 1 calc(50% - 6px);
+    margin: 3px;
+    width:100%;
+  }
+  .course_subdept li > label
+  {
+    width:100%;
   }
   .popover
   {
@@ -167,18 +182,88 @@
     right: 1em;
     bottom: 1em;
   }  
+/* Tweaks for intermediate small sizes */
+@media all and (max-width: 540px) {
+  a.link_editCourse
+  {
+    font-size:0.75em;
+  }
+  div#nav_buttons
+  {
+            flex-direction: column;
+    -webkit-flex-direction: column;
+            align-items:center;
+    -webkit-align-items:center;
+  }
+  div#nav_buttons > input, div#nav_buttons > button
+  {
+            flex:1 1 80%;
+    -webkit-flex:1 1 80%;
+    width:80%;
+  }
 }
+
  /*Very narrow screens: Single Column display */
 @media all and (max-width: 400px) {
-  .course_info li
+  .course_stdq, .course_subdept, .course_info
   {
-            flex: 1 1 100%;
-    -webkit-flex: 1 1 100%;
+            flex-direction:column;
+    -webkit-flex-direction:column;
   }
-  .course_stdq li
+  .course_stdq > li, .course_subdept > li, .course_info > li
   {    
-            flex:0 1 100%;
-    -webkit-flex:0 1 100%;    
+            flex:1 1 100%;
+    -webkit-flex:1 1 100%;
+    font-size: 0.5em;
+    border-width:1px;
+    border-radius:0;
+    width:100%;    
   }
+  .course_info > li
+  {
+    margin: -1px 0;
+  }
+  .course_stdq > li, .course_subdept > li
+  {
+    margin: 2px 0;
+  }
+  .course_info li.link_editCourse
+  {
+    min-height:30px;
+  }
+  a.link_editCourse
+  {    
+    padding:10px 1em;
+  }
+  a.link_editCourse:hover
+  {
+    padding-top:9px;
+    border-width: 1px;
+  }
+  a.link_editCourse:active
+  {
+    border: 1px solid #000;
+    padding-top:10px;
+    padding-left:calc(1em + 3px);
+  }
+  li.course_title[data-field-label="Course:"]
+  {
+    font-size: 0.8em;
+    border-width: 1px;
+  }
+  
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
