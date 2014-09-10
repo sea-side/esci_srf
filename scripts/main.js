@@ -253,7 +253,7 @@
       }
     } );
 
-    dgi( 'screen' ).style.display = "block";    
+    dgi( 'screen' ).style.display = "block";
   }
 
   function saveEditCourse( survey_number, sel_ranks, sel_types, e ) {
@@ -311,18 +311,32 @@
 
       // Find which subdept (if any) is selected
       var subdept = "";
-      if ( dgi( "subdeptSection_" + survey_number ) ) {
-        // Radio group on Flexbox page
-        subdept = $( "[name=subdept_" + survey_number + "]:checked" ).value;
-        // Update the STD Q list on save
-        updateSTDQList( survey_number, subdept );
-      } else if ( dgi( "subdeptSelector_" + survey_number ) ) {
-        // Select element on table page
-        subdept = dgi( "subdeptSelector_" + survey_number ).value;
-        // Update the STD Q Selector on save
-        updateSTDQSelect( survey_number, subdept );
+      switch ( dgi( "display_style" ).value ) {
+        case "flex":
+          {
+            if ( dgi( "subdeptSection_" + survey_number ) ) {
+              // Radio group on Flexbox page
+              subdept = $( "[name=subdept_" + survey_number + "]:checked" ).value;
+            } else { // If there are no SubDepartments in this form, we still need to
+              // updateSTDQ, to handle the case of missing course information that has now been filled in.
+              subdept = dgi( "department" ).value;
+            }
+            // Update the STD Q list on save
+            updateSTDQFlex( survey_number, subdept );
+            break;
+          }
+        case "table":
+          {
+            if ( dgi( "subdeptSelector_" + survey_number ) ) {
+              // Select element on table page
+              subdept = dgi( "subdeptSelector_" + survey_number ).value;
+            } else { // No SubDepartments in this form
+              subdept = dgi( "department" ).value;
+            }
+            // Update the STD Q Selector on save
+            updateSTDQSelect( survey_number, subdept );
+          }
       }
-
 
       // Clear any error messages from the message <section>
       popClearErrorMessages( dgi( "edit_instructor" ) );
@@ -333,8 +347,6 @@
     } else {
       return false;
     }
-
-
   }
 
   // Clears error/validation messages for the inputs that require error validation.
@@ -496,12 +508,12 @@
         dgi( "display_style" ).value = "table";
         break;
       case "Switch Flex":
-        dgi("return_page").value = "srf_list.shtml";
-        dgi("display_style").value = "flex";
+        dgi( "return_page" ).value = "srf_list.shtml";
+        dgi( "display_style" ).value = "flex";
         break;
       case "Switch Table":
-        dgi("return_page").value = "srf_table.shtml";
-        dgi("display_style").value = "table";
+        dgi( "return_page" ).value = "srf_table.shtml";
+        dgi( "display_style" ).value = "table";
         break;
       case "Submit":
       default:
@@ -584,7 +596,7 @@
   }
 
   // Flexbox page with radio buttons
-  // This function only changes the Sub Department variables. Then it calls updateSTDQList.
+  // This function only changes the Sub Department variables. Then it calls updateSTDQFlex.
   function clickSubDepartment( survey_number, subdept ) {
 
     // Skip the whole method if there is no subdept <section>. Method should never be called this way.
@@ -601,14 +613,14 @@
       if ( chooseSubDeptButton.value === "" || chooseSubDeptButton.value === 0 ) {
         subdeptList.removeChild( chooseSubDeptButton.parentNode );
       }
-      updateSTDQList( survey_number, subdept );
+      updateSTDQFlex( survey_number, subdept );
     }
   }
 
   // For the Flexbox page with radio groups
-  function updateSTDQList( survey_number, subdept ) { // subdept param should be a String
+  function updateSTDQFlex( survey_number, subdept ) { // subdept param should be a String
     // Re-type as RegExp, and add the '|all' to cover stdq choices that are fit for all subdepartments
-    subdept = RegExp( subdept + "|all" );
+    subdept = RegExp( subdept + "|all", "i" );
 
     // The <li> children of stdq <ul> are the different STD Q choices shown
     var stdqList = dgi( "stdqList_" + survey_number ).children;
@@ -646,7 +658,7 @@
   }
 
   //Table page with <select> menus
-  // This function only changes the Sub Department variables. Then it calls updateSTDQList.
+  // This function only changes the Sub Department variables. Then it calls updateSTDQFlex.
   function selectSubDepartment( e ) {
     e = e || window.event;
     if ( e.preventDefault ) e.preventDefault();
@@ -659,7 +671,7 @@
   // For the Table page with <select> elements
   function updateSTDQSelect( survey_number, subdept ) {
     // Re-type as RegExp, and add the '|all' to cover stdq choices that are fit for all subdepartments
-    subdept = RegExp( subdept + "|all" );
+    subdept = RegExp( subdept + "|all", "i" );
 
     // Due to cross-browser differences we cannot simple show/hide various <option>s in the
     // <select> element, as we do with the radio button version. Instead, on each change necessitating
@@ -687,9 +699,8 @@
     // and will also trigger the corresponding error message prompting to fill in the missing information.
 
     //First show/hide the appropriate individual questionnaires based on their 'data-esci' attributes
-    var removeList = [];
-    // We go through the <options> list in reverse, since each removal will dynamically adjust
-    // the size, and hence the positioning of the remaining elements.
+      // We go through the <options> list in reverse, since each removal would dynamically adjust
+      // the size, and hence the positioning of the remaining elements. Going from the reverse end makes this not a problem.
     for ( var i = stdqOptions.length - 1; i >= 0; --i ) {
       stdqDept = stdqOptions[ i ].dataset.esciDepartment;
       stdqRank = stdqOptions[ i ].dataset.esciRank;
@@ -704,8 +715,7 @@
         // If the <option> now being removed was previously selected, reset the selectedIndex back to zero.
         if ( stdqOptions[ i ].selected ) {
           newSTDQSelect.selectedIndex = 0;
-        }
-        // We don't remove them here, since it dynamically changes the size/length of the HTMLOptionsCollection.
+        }        
         stdqOptions.remove( i );
       }
     }
@@ -837,7 +847,7 @@
         if ( dgi( "switch_display" ) ) {
           dgi( "switch_display" ).addEventListener( 'click', submitForm.bind( dgi( "srf" ), "Switch Table" ) );
         }
-        
+
         // Event handlers for the <a>:"Edit Course Information" elements.
         // Survey Number bound as argument; second  parameter should be automatically passed as the Event by the browser.
         for ( var i = 0; i < aEditCourseGroup.length; i++ ) {

@@ -9,8 +9,8 @@
   <meta name="description" content="ESCI Suervey Request Form Submission">
   <meta name="author" content="Instructional Development, UCSB">
   <link rel="stylesheet" href="./styles/main.css">
-  <link rel='stylesheet' media='screen and (min-width: 641px) and (max-width: 900px)' href='./styles/medium900.css'>
-  <link rel='stylesheet' media='screen and (min-width: 1px) and (max-width: 640px)' href='./styles/narrow640.css'>
+  <link rel='stylesheet' media='screen and (min-width: 701px) and (max-width: 900px)' href='./styles/medium900.css'>
+  <link rel='stylesheet' media='screen and (min-width: 1px) and (max-width: 700px)' href='./styles/narrow700.css'>
   <!--[if lt IE 9]>
    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
   <![endif]-->
@@ -29,10 +29,10 @@
      TESTING SITE SUBMISSION PAGE
     </h1>
    </div>
-   <div id="error_msg" class="noprint">
-    <h2 id="error_text" class="noprint">
+   <div id="error_msg" class="noprint error_list">
+    <p id="error_text" class="noprint">
      <!--#4DHTML vWEBErrMsg-->
-    </h2>
+    </p>
    </div>   
    <div class="yesprint" id="confirmation">
     <!--#4DHTML vConfirmationMsg-->
@@ -46,3 +46,4 @@
 </script>
  </body>
 </html>
+

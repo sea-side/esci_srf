@@ -1,6 +1,6 @@
 /* Medium screens */
-@media all and (max-width: 900px) {
-  nav.navigation {
+  nav.navigation
+  {
     /* When on medium sized screens, we center it by evenly distributing empty space around items */
             justify-content: space-between;
     -webkit-justify-content: space-between;
@@ -43,7 +43,6 @@
     word-wrap:break-word;
     left:10%;
     letter-spacing:4px;
-    position:relative;
     text-align:center;
     text-transform:capitalize;
     width:80%;
@@ -53,7 +52,6 @@
     min-width: 133px;
     min-height: 55px;
   }
-
   .popover
   {
     display:none;
@@ -85,12 +83,20 @@
     padding: .8em;
   }
     
-  #edit_messages li
+  .popMessageList li
   {
     border-radius: 0.4em;
-  }  
-}
-
+  }
+  p#timestamp
+  {
+    font-size:0.9em;
+    letter-spacing: 100%;
+    line-height: 100%;
+  }
+  p#timestamp > br
+  {
+    margin-bottom:8px;
+  }
 @media all and (max-width: 768px) {
   div#nav_buttons *
   {
@@ -100,5 +106,4 @@
     border-width: 0px;
   }
 }
-
 

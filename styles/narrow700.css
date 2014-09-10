@@ -30,7 +30,6 @@
     word-wrap:break word;
     left:0;
     letter-spacing:2px;
-    position:relative;
     text-align:center;
     text-transform:capitalize;
     width:100%;
@@ -42,7 +41,6 @@
   }
   
   nav#nav > h2 {
-    position:relative;
     text-align:center;
     left:0;
     right:0;
@@ -53,7 +51,6 @@
   {
     width:100%;
     left:0;
-    position: relative;
             justify-content:center;
     -webkit-justify-content:center;
             align-items:center;
@@ -62,18 +59,13 @@
   }
   div#nav_buttons > input, div#nav_buttons > button
   {
-            flex:1 1 30%;
-    -webkit-flex:1 1 30%;
-    position: relative;
-    top:8px;
+            flex:1 1 33%;
+    -webkit-flex:1 1 33%;    
+    top:12px;
     margin: 4px;
-    border:3px solid #75a979;
-    color:#e1ffe4;
-    background-color:#498449;
-    text-align: center;
-    border-radius: 1em;
-    font-size: 0.7em;
-    -webkit-appearance: none;
+    border:3px solid;    
+    text-align: center;    
+    font-size: 0.7em;    
   }
   
   div#heading > *
@@ -95,7 +87,6 @@
     border-style:solid;
     border-color: #ddd;
     border-radius: .3em;
-    position:relative;
     width:100%;
     height:100%;
   }
@@ -146,7 +137,6 @@
     padding-top:18px;
     padding-left:calc(1em + 3px);
   }
-
   li.link_editCourse
   {
     height:3em;
@@ -162,11 +152,11 @@
     padding: .5em;    
   }
   
-  #edit_messages
+  .popMessageList
   {
     min-height: 0;
   }
-  #edit_messages li
+  .popMessageList li
   {
     border-radius: 0.2em;
   }
@@ -181,7 +171,21 @@
     position:absolute;
     right: 1em;
     bottom: 1em;
-  }  
+  }
+  p#timestamp
+  {
+    font-size:0.9em;
+    letter-spacing: 100%;
+    line-height: 100%;
+  }
+  p#timestamp > br
+  {
+    margin-bottom:8px;
+  }
+  nav  input, nav  button
+  {
+    width:50%;    
+  }
 /* Tweaks for intermediate small sizes */
 @media all and (max-width: 540px) {
   a.link_editCourse
@@ -189,27 +193,28 @@
     font-size:0.75em;
   }
   div#nav_buttons
-  {
-            flex-direction: column;
-    -webkit-flex-direction: column;
+  {           
             align-items:center;
     -webkit-align-items:center;
+            flex-flow: row wrap;
+    -webkit-flex-flow: row wrap;
   }
   div#nav_buttons > input, div#nav_buttons > button
   {
             flex:1 1 80%;
     -webkit-flex:1 1 80%;
-    width:80%;
+    max-width:80%;
+    min-width:200px;
+    
+  }
+  nav  input, nav  button
+  {
+    width:100%;
+    display:inline-block;
   }
 }
-
  /*Very narrow screens: Single Column display */
 @media all and (max-width: 400px) {
-  .course_stdq, .course_subdept, .course_info
-  {
-            flex-direction:column;
-    -webkit-flex-direction:column;
-  }
   .course_stdq > li, .course_subdept > li, .course_info > li
   {    
             flex:1 1 100%;
@@ -252,18 +257,76 @@
     border-width: 1px;
   }
   
-
+  p#edit_course
+  {
+    letter-spacing: 4px;
+    font-size:1em;
+    width:100%;
+    left:0;
+    border-radius:17px / 50%;
+  }
+  input#edit_instructor , div.popover ul > li
+  {
+    font-size: 0.85em;
+  }
+  a#edit_save_changes, a#edit_cancel
+  {
+    position:fixed;
+  }
+div.add_container label
+ {
+  top:-12px;
+  font-size:0.8em;
+ }
+ div.add_container input
+ {
+  margin:6px 0;
+  font-size:0.8em;
+ }
+ 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
+@media all and (max-height: 480px){
+ div#popEdit p
+ {
+  margin:2px 0;
+  padding: 0;
+ }
+ div#popEdit ul > li
+ {
+  margin-bottom:2px;
+ }
+ .popover ul
+ {
+  padding-left:0;
+  -webkit-padding-start: 0;
+  -webkit-padding-left:0;
+  left:0;
+ }
+ p#edit_course
+  {
+    letter-spacing: 4px;
+    font-size:1em;
+    width:100%;
+    left:0;
+    border-radius:17px / 50%;
+    margin: 4px 0;
+  }
+  input#edit_instructor , div.popover ul > li
+  {
+    font-size: 0.85em;
+  }
+  a#edit_save_changes, a#edit_cancel
+  {
+    position:fixed;
+  }
+ div.add_container label
+ {
+  top:-12px;
+  font-size:0.8em;
+ }
+ div.add_container input
+ {
+  margin:6px 0;
+  font-size:0.8em;
+ }
+}

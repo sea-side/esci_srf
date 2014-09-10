@@ -9,8 +9,8 @@
   <meta name="description" content="ESCI Suervey Request Form List">
   <meta name="author" content="Instructional Development, UCSB">
   <link rel="stylesheet" href="./styles/main.css">
-  <link rel='stylesheet' media='screen and (min-width: 641px) and (max-width: 900px)' href='./styles/medium900.css'>
-  <link rel='stylesheet' media='screen and (min-width: 1px) and (max-width: 700px)' href='./styles/narrow640.css' >
+  <link rel='stylesheet' media='screen and (min-width: 701px) and (max-width: 900px)' href='./styles/medium900.css'>
+  <link rel='stylesheet' media='screen and (min-width: 1px) and (max-width: 700px)' href='./styles/narrow700.css' >
   <!--[if lt IE 9]>
    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
   <![endif]-->
@@ -44,9 +44,9 @@
 <!--  Add other navigation elements, links to parent pages,etc, in this div-->
   <h2>ESCI Survey Request Administration</h2>
   <div id="nav_buttons">
-   <input id="add_submit" type="submit" form="srf" value="Add Additional ESCI Surveys..." >
-   <input id="switch_display" name="switch_display" type="submit" form="srf" value="Switch to Flex-Box View">
-   <input id="srf_submit" type="submit" form="srf" value="Submit Changes">
+   <button id="add_submit" type="submit" form="srf" value="">Add Additional ESCI Surveys...</button>
+   <button id="switch_display" name="switch_display" type="submit" form="srf" value="">Switch to Flex-Box View</button>
+   <button id="srf_submit" type="submit" form="srf" value="">Submit Changes</button>
    <input id="return_page" type="hidden" form="srf" name="return_page" value="">  
   </div>
  </nav>
@@ -59,7 +59,7 @@
       <span class="department"><!--#4DTEXT vDeptTitle--></span></h3>
       <h3 class="important shaded">Survey Request Forms are due by: <!--#4DTEXT vDateDue--></h3>
     </div>
-    <div id="error_msg" class="warning" hidden>
+    <div id="error_msg" class="warning error_list" hidden>
       <p id="error_text" class="error" ><!--#4DHTML vWEBErrMsg--></p>
     </div>
     <div id="intro" class="instructions"><!--#4DHTML vInstructions--></div>
@@ -67,8 +67,8 @@
       <form id="srf" name="srf" action="../4DACTION/WEB_SRF_Submit/<!--#4DTEXT vDepartment-->" method="post" accept-charset="utf-8">
        <!--#4DHTML bl_SurveyRequestForm -->
        <input id="display_style" type="hidden" name="display_style" value="table">  
-       <input type="hidden" name="department" value="<!--#4DHTML vDepartment-->">
-       <input type="hidden" name="yq" value="<!--#4DHTML vYearQuarterPeriod-->">
+       <input id="department" type="hidden" name="department" value="<!--#4DHTML vDepartment-->">
+       <input id="yq" type="hidden" name="yq" value="<!--#4DHTML vYearQuarterPeriod-->">
       </form>
     </div>
   </div>
