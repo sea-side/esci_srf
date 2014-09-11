@@ -26,8 +26,8 @@
     border-radius:10px;
     border-width:2px;
     font-size:.7em;
-    overflow-wrap:break word;
-    word-wrap:break word;
+    overflow-wrap:break-word;
+    word-wrap:break-word;
     left:0;
     letter-spacing:2px;
     text-align:center;
@@ -115,7 +115,7 @@
             transition: display 0.5s ease-in-out 0s;
     -webkit-transition: display 0.5s ease-in-out 0s;
     border-style: none;
-    position:absolute;
+    position:fixed;
     z-index: 3;
     padding: 0;
     width:100%;
@@ -159,6 +159,7 @@
   .popMessageList li
   {
     border-radius: 0.2em;
+    font-size:0.75em;
   }
   #edit_save_changes
   {
@@ -172,13 +173,13 @@
     right: 1em;
     bottom: 1em;
   }
-  p#timestamp
+  #timestamp
   {
     font-size:0.9em;
-    letter-spacing: 100%;
+    letter-spacing: normal;
     line-height: 100%;
   }
-  p#timestamp > br
+  #timestamp > br
   {
     margin-bottom:8px;
   }
@@ -265,7 +266,7 @@
     left:0;
     border-radius:17px / 50%;
   }
-  input#edit_instructor , div.popover ul > li
+  input#edit_instructor , popover ul > li
   {
     font-size: 0.85em;
   }
@@ -311,7 +312,7 @@ div.add_container label
     border-radius:17px / 50%;
     margin: 4px 0;
   }
-  input#edit_instructor , div.popover ul > li
+  input#edit_instructor , .popover ul > li
   {
     font-size: 0.85em;
   }
@@ -330,3 +331,5 @@ div.add_container label
   font-size:0.8em;
  }
 }
+
+

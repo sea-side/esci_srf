@@ -1,12 +1,12 @@
 /* Medium screens */
-  nav.navigation
+  .navigation
   {
     /* When on medium sized screens, we center it by evenly distributing empty space around items */
             justify-content: space-between;
     -webkit-justify-content: space-between;
     font-size: .9em;
   }
-  nav#nav > h2 {
+  nav > h2 {
     letter-spacing: 2px;
     font-weight: 500;    
     left:10px;
@@ -87,15 +87,20 @@
   {
     border-radius: 0.4em;
   }
-  p#timestamp
+  #timestamp
   {
     font-size:0.9em;
-    letter-spacing: 100%;
+    letter-spacing:normal;
     line-height: 100%;
   }
-  p#timestamp > br
+  #timestamp > br
   {
     margin-bottom:8px;
+  }
+  /* Try to force Flex-box on smaller screens. Table view doesn't work well at smaller widths */
+  nav#nav button#switch_display
+  {
+    display:none;
   }
 @media all and (max-width: 768px) {
   div#nav_buttons *
@@ -106,4 +111,5 @@
     border-width: 0px;
   }
 }
+
 

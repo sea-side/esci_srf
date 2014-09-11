@@ -96,8 +96,8 @@
       <div id="list">
         <form name="add_courses" action="../4DACTION/WEB_SRF_AddCourses" method="post" accept-charset="utf-8" id="add_courses" >
           <!--#4DHTML bl_webContent-->
-          <input id="department" type="hidden" name="department" value="<!--#4DHTML vDepartment-->">
           <input id="yq" type="hidden" name="yq" value="<!--#4DHTML vYearQuarterPeriod-->">
+          <input id="department" type="hidden" name="department" value="<!--#4DHTML vDepartment-->">
           <input id="return_page" type="hidden" form="add_courses" name="return_page" value="">
           <input id="display_style" type="hidden" form="add_courses" name="display_style" value="<!--#4DHTML vDisplayStyle-->">  
         </form>

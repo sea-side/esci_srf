@@ -11,7 +11,7 @@
 // 
 
 
-
+////////////////////////////////////////////////////////////////////////////////
 // self-executing function with closed scope on loading/ready
 ( function( window, document, undefined ) {
 
@@ -495,7 +495,7 @@
   function submitForm( action, e ) {
     e = e || window.event;
     if ( e.preventDefault ) e.preventDefault();
-    e.returnValue = false; // For IE compatibility ...
+    //e.returnValue = false; // For IE compatibility ...
     // Set the return page for the server to send back
     switch ( action ) {
       case "Add Flex":
@@ -645,8 +645,10 @@
       if ( subdept.test( stdqDept ) && ( stdqRank.indexOf( courseRank ) ) != -1 ) {
         stdqList[ i ].removeAttribute( "hidden" );
       } else {
-        //stdqList[ i ].setAttribute( "hidden", true );
-        stdqList[ i ].hidden = true;
+        // IE < 11 requires the 'setAttribute' version, since it does not recognize 'hidden' as a valid attribute
+        // but treats it as a 'custom' attribute.
+        stdqList[ i ].setAttribute( "hidden", true );
+        // stdqList[ i ].hidden = true; // Otherwise, <-- this method is preferred.
         // If the choice now being hidden was already checked, set the checked radio back to
         // "Do not evaluate" (the default, element[0]) to avoid having an unselected radio group
         if ( stdqList[ i ].firstElementChild.checked ) {
@@ -725,7 +727,8 @@
     // Finally replace the old <select> with the new
     oldSTDQSelect.parentNode.replaceChild( newSTDQSelect, oldSTDQSelect );
     // and make it visible
-    newSTDQSelect.hidden = false;
+    newSTDQSelect.removeAttribute('hidden');
+    //newSTDQSelect.hidden = false;
   }
 
   // Clones the 'template' <div> with children; renames the variables appropriately;
@@ -881,16 +884,26 @@
       // Some of he event handling logic is different on the Table formatted version of the page
     case "List Surveys Table":
       {
+        // Try to redirect to Flex-box view at widths < 900px.
+        // Table view doesn't work very well at smaller widths.
         // Does the main form exist?
         if ( dgi( "srf" ) ) {
           dgi( "srf" ).addEventListener( 'submit', submitForm.bind( dgi( "srf" ), "Submit" ) );
+          loadScreen();
+          if (myWidth < 900) {            
+            if (document.createEvent) {
+              var evt = document.createEvent("Event");
+              evt.initEvent("submit",false,false);
+            }
+            submitForm("Switch Flex", evt);
+          }
         }
         if ( dgi( "add_submit" ) ) {
           dgi( "add_submit" ).addEventListener( 'click', submitForm.bind( dgi( "srf" ), "Add Table" ) );
         }
         if ( dgi( "switch_display" ) ) {
           dgi( "switch_display" ).addEventListener( 'click', submitForm.bind( dgi( "srf" ), "Switch Flex" ) );
-        }
+        }        
 
         // Event handlers for the <a>:"Edit Course Information" elements.
         // Survey Number bound as argument; second  parameter should be automatically passed as the Event by the browser.
@@ -975,24 +988,34 @@
   // If there is no error to report, hide the error block
   errMsg.textContent = errMsg.textContent.trim(); // Kill extra HTML-source whitespace
   if ( errMsg.textContent === undefined || errMsg.textContent === "" ) {
-    //dgi( "error_msg" ).style.display = "none";
-    dgi( "error_msg" ).hidden = true;
+    //dgi( "error_msg" ).hidden = true;
+    dgi( "error_msg" ).setAttribute('hidden', true);
   } // Else hide the other elements
   else {
-    dgi( "error_msg" ).hidden = false;
+    dgi( "error_msg" ).setAttribute('hidden', false);
     if ( dgi( "error_msg" ) ) dgi( "error_msg" ).style.display = "block";
-    //if ( dgi( "heading" ) ) dgi( "heading" ).style.display = "none";
-    //if ( dgi( "intro" ) ) dgi( "intro" ).style.display = "none";
-    //if ( dgi( "list" ) ) dgi( "list" ).style.display = "none";
-    if ( dgi( "heading" ) ) dgi( "heading" ).hidden = true;
-    if ( dgi( "intro" ) ) dgi( "intro" ).hidden = true;
-    if ( dgi( "list" ) ) dgi( "list" ).hidden = true;
+    if ( dgi( "heading" ) ){
+      dgi( "heading" ).setAttribute('hidden', true);
+      //dgi( "heading" ).hidden = true;
+    }
+    if ( dgi( "intro" ) ){
+      dgi( "intro" ).setAttribute('hidden', true);
+      //dgi( "intro" ).hidden = true;
+    }
+    if ( dgi( "list" ) ){
+      dgi( "list" ).setAttribute('hidden', true);
+      //dgi( "list" ).hidden = true;
+    }    
   }
 
-  // Add fadeout for any '.valid' elements, once the page has loaded
+  // Upon page load, add fadeout class for any '.valid' elements.
   forEach.call( $( '.valid', true ), function( node ) {
     node.classList.add( 'fadeout' );
   } );
   ////////////////////////////////////////////////////////////////////////////////
 
 } )( window, document );
+// END: self-executing function on page load
+///////////////////////////////////////////////////////////////////////////////
+
+

@@ -46,7 +46,6 @@
    <button id="add_submit" type="submit" form="srf" value="">Add Additional ESCI Surveys...</button>
    <button id="switch_display" name="switch_display" type="submit" form="srf" value="">Switch to Flex-Box View</button>
    <button id="srf_submit" type="submit" form="srf" value="">Submit Changes</button>
-   <input id="return_page" type="hidden" form="srf" name="return_page" value="">  
   </div>
  </nav>
 
@@ -65,9 +64,10 @@
     <div id="list">       
       <form id="srf" name="srf" action="../4DACTION/WEB_SRF_Submit/<!--#4DTEXT vDepartment-->" method="post" accept-charset="utf-8">
        <!--#4DHTML bl_SurveyRequestForm -->
-       <input id="display_style" type="hidden" name="display_style" value="table">  
-       <input id="department" type="hidden" name="department" value="<!--#4DHTML vDepartment-->">
        <input id="yq" type="hidden" name="yq" value="<!--#4DHTML vYearQuarterPeriod-->">
+       <input id="department" type="hidden" name="department" value="<!--#4DHTML vDepartment-->">
+       <input id="return_page" type="hidden" form="srf" name="return_page" value="">  
+       <input id="display_style" type="hidden" name="display_style" value="table">  
       </form>
     </div>
   </div>
