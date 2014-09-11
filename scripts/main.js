@@ -323,8 +323,7 @@
             }
             // Update the STD Q list on save
             updateSTDQFlex( survey_number, subdept );
-            break;
-          }
+            break;         }
         case "table":
           {
             if ( dgi( "subdeptSelector_" + survey_number ) ) {
@@ -508,7 +507,7 @@
         dgi( "display_style" ).value = "table";
         break;
       case "Switch Flex":
-        dgi( "return_page" ).value = "srf_list.shtml";
+        dgi( "return_page" ).value = "srf_flex.shtml";
         dgi( "display_style" ).value = "flex";
         break;
       case "Switch Table":
@@ -937,7 +936,7 @@
 
         if ( dgi( "add_instructor_1" ) ) {
           // These are the same input filters as the input_instructor field
-          // of the main srf_list.shtml page. They start on the one default
+          // of the main srf_flex.shtml page. They start on the one default
           // new course field, and will have to be added again to the new
           // instructor input upon cloning the add_course <div>.
           dgi( "add_instructor_1" ).addEventListener( 'keypress', inputAlpha );

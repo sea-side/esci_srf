@@ -15,6 +15,12 @@ body
   background:#8ca494;
   color:#314136;
   font:100% "Gill Sans", "Lucida Grande", Lucida, Verdana, sans-serif;
+  margin-top:0;
+  margin-left: 0;
+  margin-right: 0;
+  
+  width:100%;
+
 }
 h1
 {
@@ -76,7 +82,7 @@ nav > h2
   width:50%;
   float:left;
   text-align: left;
-  position:absolute;  
+  position:absolute;
 }
 div#nav_buttons
 {
@@ -91,7 +97,7 @@ div#nav_buttons
   -webkit-align-items: stretch;
           justify-content: flex-end;
   -webkit-justify-content: flex-end;
-    
+
   width:50%;
   right:0;
   float: right;
@@ -99,8 +105,8 @@ div#nav_buttons
 nav#nav button
 {
   display: inline;
-          flex: 0 1 33%;  
-  -webkit-flex: 0 1 33%;  
+          flex: 0 1 33%;
+  -webkit-flex: 0 1 33%;
           appearance: none;
   -webkit-appearance: none;
      -moz-appearance: none;
@@ -175,15 +181,16 @@ table#course_list
 .department_stripe
 {
   color:#e3e9e5;
-  margin: 12px 0;
+  margin: 18px 0;
   letter-spacing: 2px;
   font-size:larger;
   background-color:#7b9583;
   border-top:2px solid #29352c;
   border-bottom:2px solid #29352c;
+  text-align: center;
 }
-table#course_list caption::before,
-table#course_list caption::after
+.department_stripe::before,
+.department_stripe::after
 {
   top:-1px;
   margin: 0 3px;
@@ -203,7 +210,7 @@ table#course_list td
 table#course_list  tr:nth-child(even)
 {
   background-color:#bac9bf;
-  color:#38493d;  
+  color:#38493d;
 }
 .col-subdept
 {
@@ -277,9 +284,9 @@ table#course_list a.link_editCourse:active
 {
   padding:5px;
   margin:10px 0;
-  width:94%;
-  left:2%;
-  list-style: none;        
+  width:98%;
+  left:1%;
+  list-style: none;
   display:-webkit-box;
   display:-moz-box;
   display:-ms-flexbox;
@@ -287,8 +294,8 @@ table#course_list a.link_editCourse:active
   display:flex;
           flex-flow: column wrap;
   -webkit-flex-flow: column wrap;
-  justify-content: center;        
-  border: solid black;        
+  justify-content: center;
+  border: solid black;
   border-radius: .5em;
   background-color:rgba(105, 139, 117,.5);
 }
@@ -320,18 +327,18 @@ table#course_list a.link_editCourse:active
 .add_container label
 {
   position: absolute;
-  top: -18px;  
+  top: -18px;
   display:inline-block;
   float:left;
   text-align: left;
-  margin-left:10px;  
+  margin-left:10px;
   font-weight: bold;
   font-family: "Book Antiqua", "Bookman Old Style", Georgia, serif;
 }
 .survey_container > ul > li
 {
   margin: 2px;
-  width:auto;  
+  width:auto;
 }
 .add_container > ul > li, .add_container input
 {
@@ -364,7 +371,7 @@ table#course_list a.link_editCourse:active
 }
 a.link_editCourse
 {
-  background:transparent;  
+  background:transparent;
   border:none;
   border-radius:1em;
   color:#c7d3cc;
@@ -389,15 +396,15 @@ a.link_editCourse:link
   height:100%;
   width:100%;
   left:0;
-  top:0;  
-  margin:0;  
+  top:0;
+  margin:0;
 }
 a.link_editCourse:visited
-{  
+{
   font-weight:600;
   color:#3a6247;
 }
-  
+
 a.link_editCourse:hover
 {
   background:#303f35;
@@ -422,24 +429,24 @@ a.link_editCourse:active
 {
   padding:0;
   margin:.3em 0;
-  
+
   list-style: none;
-  
+
   display: -webkit-box;
   display: -moz-box;
   display: -ms-flexbox;
   display: -webkit-flex;
   display: flex;
-  
+
           flex-flow:row wrap;
   -webkit-flex-flow:row wrap;
           justify-content:space-around;
   -webkit-justify-content:space-around;
           align-items:stretch;
   -webkit-align-items:stretch;
-  
-  border:none;  
-}      
+
+  border:none;
+}
 .course_info li
 {
   height: auto;
@@ -454,9 +461,9 @@ a.link_editCourse:active
   border-radius: 0.33em;
   font-family:"Source Code Pro", "Monaco", "Consolas", monospace;
   text-align: center;
-  line-height: normal;        
+  line-height: normal;
   background-color: #B4C1B8;
-          flex:1 1 auto;  
+          flex:1 1 auto;
   -webkit-flex:1 1 auto;
 }
 .course_info li::before
@@ -484,7 +491,7 @@ a.link_editCourse:active
 }
 li.course_title
 {
-  background-color: #E0E4E2;  
+  background-color: #E0E4E2;
   color:#2997E4;
 }
 li.course_title[data-field-label="Course:"]
@@ -499,7 +506,7 @@ li.course_title[data-field-label="Course:"]
 }
 li.course_title[data-field-label="Course:"]::before
 {
-  top:0.25em;  
+  top:0.25em;
 }
 .course_subdept
 {
@@ -507,8 +514,8 @@ li.course_title[data-field-label="Course:"]::before
   margin:0;
   list-style: none;
   border: none;
-  border-radius: .5em;      
-  
+  border-radius: .5em;
+
   display: -webkit-box;
   display: -moz-box;
   display: -ms-flexbox;
@@ -521,12 +528,12 @@ li.course_title[data-field-label="Course:"]::before
           justify-content: flex-start;
   -webkit-justify-content:flex-start;
 }
-  
+
 .course_subdept li
 {
   margin: 6px 5px 8px 5px;
           flex: 0 1 auto;
-  -webkit-flex: 0 1 auto;  
+  -webkit-flex: 0 1 auto;
 }
 .course_subdept li > label
 {
@@ -541,15 +548,15 @@ li.course_title[data-field-label="Course:"]::before
   width:100%;
 }
 .course_subdept input[type=radio][name^=subdept_]:checked + label
-{  
+{
   background-color:#a84803;
   border-color:#ffd9b5;
-  color:#ffd9b5;  
+  color:#ffd9b5;
 }
 .course_stdq
 {
   padding:0;
-  margin:0;  
+  margin:0;
   list-style: none;
     display: -webkit-box;
   display: -moz-box;
@@ -563,12 +570,12 @@ li.course_title[data-field-label="Course:"]::before
                   align-items:center;
           -webkit-align-items:center;
   border: none;
-  border-radius: .5em;      
+  border-radius: .5em;
 }
 .course_stdq li span
 {
   border: 3px solid rgb(255, 255, 255);
-  padding: 0px  10px 2px 10px ;  
+  padding: 0px  10px 2px 10px ;
   border-radius:.5em;
   color:rgb(255, 255, 255);
   background-color: rgb(72, 96, 79);
@@ -596,7 +603,7 @@ li.course_title[data-field-label="Course:"]::before
   content: "\2714";
   padding: 0 10px 0 0px;
           transition: all 0.1s linear 0s;
-  -webkit-transition: all 0.1s linear 0s;  
+  -webkit-transition: all 0.1s linear 0s;
 }
 .course_stdq input[type=radio]:checked + label::before
 {
@@ -611,9 +618,9 @@ li.course_title[data-field-label="Course:"]::before
 {
   background-color:#0a58aa;
   border-color:#74c2ff;
-  color:#ceebff;  
+  color:#ceebff;
           transition: all 0.1s linear 0s;
-  -webkit-transition: all 0.1s linear 0s;  
+  -webkit-transition: all 0.1s linear 0s;
 }
 /* * * * * * * * * * * * * * * * * * * * END - Flexbox Style Display * * * * * * * * * * * * * * * * * * */
 /* * * * * * * * * * * * * * * * * * * * BEGIN - Common Auxiliary Elements * * * * * * * * * * * * * * * * * * */
@@ -633,7 +640,7 @@ li.course_title[data-field-label="Course:"]::before
   z-index:3;
   max-height: 800px;
   max-width: 900px;
- 
+
 }
 .popover  ul
 {
@@ -662,9 +669,9 @@ li.course_title[data-field-label="Course:"]::before
 .popMessageList
 {
   background-color:none;
-  left:0;  
-  width: 100%;  
-  padding:0.5em 0;  
+  left:0;
+  width: 100%;
+  padding:0.5em 0;
   z-index: auto;
   -webkit-margin-before:0;
   -webkit-padding-start: 0;
@@ -673,7 +680,7 @@ li.course_title[data-field-label="Course:"]::before
 .popMessageList > li
 {
   opacity:0.9;
-  padding: 0 0.5em 0 2.5em;  
+  padding: 0 0.5em 0 2.5em;
   text-indent: -2.5em; /* Create hanging indent for multi-line items in list. */
   margin: 2px 0;
   left:0;
@@ -686,14 +693,14 @@ li.course_title[data-field-label="Course:"]::before
  they are being placed inline in the main HTML file in an <svg> block. */
 .blurout1
 {
-  -webkit-filter:blur(1px);          
+  -webkit-filter:blur(1px);
           filter:url(data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGZpbHRlciBpZD0iYmx1cm91dCI+PGZlR2F1c3NpYW5CbHVyIHN0ZERldmlhdGlvbj0iMSIgaW49IlNvdXJjZUdyYXBoaWMiLz48ZmVjb2xvcm1hdHJpeCB2YWx1ZXM9IjAuMSIgdHlwZT0ic2F0dXJhdGUiIGluPSJTb3VyY2VHcmFwaGljIi8+PC9maWx0ZXI+PC9zdmc+#blurout);
           filter:progid:DXImageTransform.Microsoft.Blur(PixelRadius='1');
 }
 .grayout
 {
   background: #888;
-          filter:url(../srf_list.shtml#desaturate);
+          filter:url(../srf_flex.shtml#desaturate);
           filter:grayscale(100%);
           filter:gray;
   -webkit-filter:grayscale(100%);
@@ -710,10 +717,10 @@ hr
   border: 0;
   height: 1px;
   background: #333;
-  background-image: -webkit-linear-gradient(left, #ccc, #333, #ccc); 
-  background-image:    -moz-linear-gradient(left, #ccc, #333, #ccc); 
-  background-image:     -ms-linear-gradient(left, #ccc, #333, #ccc); 
-  background-image:      -o-linear-gradient(left, #ccc, #333, #ccc);   
+  background-image: -webkit-linear-gradient(left, #ccc, #333, #ccc);
+  background-image:    -moz-linear-gradient(left, #ccc, #333, #ccc);
+  background-image:     -ms-linear-gradient(left, #ccc, #333, #ccc);
+  background-image:      -o-linear-gradient(left, #ccc, #333, #ccc);
 }
 #screen
 {
@@ -854,7 +861,7 @@ input.fixed
 }
 .valid
 {
-  opacity: 1;  
+  opacity: 1;
   background:#DFF2BF !important;
   color:#4F8A10 !important;
   list-style:none;
@@ -902,7 +909,7 @@ input.fixed
 }
 .fadeout
 {
-  opacity: 0;  
+  opacity: 0;
           transition: opacity 3s ease-in-out 3s;
   -webkit-transition: opacity 3s ease-in-out 3s;
 }
@@ -920,11 +927,11 @@ input.fixed
   display: flex;
           flex-flow: row wrap;
   -webkit-flex-flow: row wrap;
-  
+
   /* This aligns items to the end line on main-axis */
           justify-content: flex-end;
   -webkit-justify-content: flex-end;
-  
+
   background-color: #cdc;
   position: fixed;
   height: 2em;
@@ -940,7 +947,7 @@ input.fixed
 @media all and (max-width:1200px){
   nav#nav h2
   {
-    letter-spacing: normal;    
+    letter-spacing: normal;
   }
 }
 @media all and (max-width: 1000px){
@@ -950,51 +957,33 @@ input.fixed
     top:11px;
   }
 }
-@page
-{
-  size:landscape; /* Not supported any more */
-}
-@media print 
+/* * * * * * * * * * * * * * * * * * * * Tidy up printable version * * * * * * * * * * * * * * * * * * */
+
+@media print
 {
   *, *::before, *::after
   {
     background:#FFF;
     color:#000;
   }
-  
+
   @page
   {
     size:landscape; /* Not supported any more */
   }
-  
-  .noprint
+
+  .noprint, .noprint *
   {
-    display:none;
+    display:none !important;
+    background-color:transparent !important;
   }
-  
-  .yesprint, .yesprint  * 
-  {    
-    font-family: monospace;
-    font-size: 0.5em;
-    color:black;
+
+  .yesprint, .yesprint  *
+  {
+    font-family: monospace !important;
+    font-size: 0.5em !important;
+    color:#000 !important;
+    background-color: transparent !important;
   }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-       

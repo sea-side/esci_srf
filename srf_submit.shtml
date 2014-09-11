@@ -11,16 +11,17 @@
   <link rel="stylesheet" href="./styles/main.css">
   <link rel='stylesheet' media='screen and (min-width: 701px) and (max-width: 900px)' href='./styles/medium900.css'>
   <link rel='stylesheet' media='screen and (min-width: 1px) and (max-width: 700px)' href='./styles/narrow700.css'>
-  <!--[if lt IE 9]>
-   <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-  <![endif]-->
- </head>
+    <!--[if lt IE 9]>
+      <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
  <body id="body" data-page-name="Submit Surveys">
-  <nav id="nav" class="navigation noprint">
-   <h2>ESCI Survey Request Administration</h2>
-   <div id="nav_buttons">
-    <input type="button" class="centered" value="Return to home" onclick="location.href=&#39;http://db01.id.ucsb.edu:8019/&#39;">
-    <input type="button" value="Print" onclick="window.print()">   
+  <nav id="nav" class="noprint navigation">
+   <h2>
+    ESCI Survey Request Administration
+   </h2>
+   <div id="nav_buttons" class="noprint">
+    <input type="button" class="centered" value="Return to home" onclick="location.href=&#39;http://db01.id.ucsb.edu:8019/&#39;"> <input type="button" value="Print" onclick="window.print()">
    </div>
   </nav>
   <div id="content">
@@ -33,7 +34,7 @@
     <p id="error_text" class="noprint">
      <!--#4DHTML vWEBErrMsg-->
     </p>
-   </div>   
+   </div>
    <div class="yesprint" id="confirmation">
     <!--#4DHTML vConfirmationMsg-->
    </div>
@@ -42,8 +43,7 @@
    </div>
   </div>
   <div id="footer" class="yesprint"></div>
-  <script src="./scripts/main.js">
-</script>
+  <script src="./scripts/dataset.js"></script>
+  </script> <script src="./scripts/main.js"></script>
  </body>
 </html>
-

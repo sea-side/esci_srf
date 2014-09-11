@@ -14,8 +14,7 @@
   <!--[if lt IE 9]>
    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
   <![endif]-->
-</head>
-
+  </head>
 <body id="body" data-page-name="List Surveys Table">
  <svg hidden xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" viewBox="0 0 2000 2000" height="100%" width="100%">
   <defs>
@@ -74,6 +73,7 @@
   </div>
   <!--#4DHTML t_popOver -->
   <!--#4DHTML t_stdqListMaster -->
+  <script src="./scripts/dataset.js"></script>
   <script src="./scripts/main.js"></script>  
 </body>
 </html>
