@@ -316,10 +316,10 @@
           {
             if ( dgi( "subdeptSection_" + survey_number ) ) {
               // Radio group on Flexbox page
-              subdept = $( "[name=subdept_" + survey_number + "]:checked" ).value;
+              subdept = $( "input[name=subdept_" + survey_number + "]:checked" ).value;
             } else { // If there are no SubDepartments in this form, we still need to
-              // updateSTDQ, to handle the case of missing course information that has now been filled in.
-              subdept = dgi( "department" ).value;
+              // updateSTDQ, to handle the case of missing course information that has now been filled in.              
+              subdept = dgi( "department" ).value;              
             }
             // Update the STD Q list on save
             updateSTDQFlex( survey_number, subdept );
@@ -619,7 +619,7 @@
   // For the Flexbox page with radio groups
   function updateSTDQFlex( survey_number, subdept ) { // subdept param should be a String
     // Re-type as RegExp, and add the '|all' to cover stdq choices that are fit for all subdepartments
-    subdept = RegExp( subdept + "|all", "i" );
+    subdept = new RegExp( subdept + '|all', 'i' );
 
     // The <li> children of stdq <ul> are the different STD Q choices shown
     var stdqList = dgi( "stdqList_" + survey_number ).children;

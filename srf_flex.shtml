@@ -40,6 +40,7 @@
    </filter>
   </defs>
  </svg>
+      <form id="srf" name="srf" action="../4DACTION/WEB_SRF_Submit/<!--#4DTEXT vDepartment-->" method="post" accept-charset="utf-8">
  <nav id="nav" class="navigation" role="navigation">
 <!--  Add other navigation elements, links to parent pages,etc, in this div-->
   <h2>ESCI Survey Request Administration</h2>
@@ -65,7 +66,6 @@
     <div id="intro" class="instructions"><!--#4DHTML vInstructions--></div>
     <div id="list">
      <div id="department_strip" class="department_stripe"><!--#4DHTML vDeptTitle--> Course Evaluations for Current Quarter <!--4DHTML vCurrentQuarter--></div>
-      <form id="srf" name="srf" action="../4DACTION/WEB_SRF_Submit/<!--#4DTEXT vDepartment-->" method="post" accept-charset="utf-8">
        <!--#4DHTML bl_SurveyRequestForm -->
        <input id="yq" type="hidden" name="yq" value="<!--#4DHTML vYearQuarterPeriod-->">
        <input id="department" type="hidden" name="department" value="<!--#4DHTML vDepartment-->">

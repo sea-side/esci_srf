@@ -99,9 +99,9 @@ a.link_editCourse
   margin-bottom:8px;
 }
 /* Try to force Flex-box on smaller screens. Table view doesn't work well at smaller widths */
-nav#nav button#switch_display
+div#nav_buttons button#switch_display
 {
-  display:none;
+  display:none !important;
 }
 @media all and (max-width:768px) {
   div#nav_buttons *

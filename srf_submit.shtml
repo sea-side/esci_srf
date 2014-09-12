@@ -24,7 +24,7 @@
     <button type="button" class="centered" onclick="location.href=&#39;http://db01.id.ucsb.edu:8019/&#39;">
       Return to home
     </button>
-    <button type="button" onclick="window.print()">Print</button>
+    <button type="button" onclick="window.print()" title="It is advised to print in landscape orientation.">Print</button>
    </div>
   </nav>
   <div id="content">
