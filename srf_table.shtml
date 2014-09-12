@@ -40,8 +40,8 @@
   </defs>
  </svg>
  <form id="srf" name="srf" action="../4DACTION/WEB_SRF_Submit/<!--#4DTEXT vDepartment-->" method="post" accept-charset="utf-8">
- <nav id="nav" class="navigation" role="navigation">
-<!--  Add other navigation elements, links to parent pages,etc, in this div-->
+  <nav id="nav" class="navigation" role="navigation">
+ <!--  Add other navigation elements, links to parent pages,etc, in this div-->
   <h2>ESCI Survey Request Administration</h2>
   <div id="nav_buttons">
    <button id="add_submit" type="submit" form="srf" value="">Add Additional ESCI Surveys...</button>

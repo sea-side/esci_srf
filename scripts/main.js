@@ -49,7 +49,7 @@
   //Get all the sub department groups (if any)
   var subdeptULGroup = $( '.course_subdept', true ); // get the radio button group of sub departments
   var subdeptSelectors = $( '.select_subdept', true ); // get the <select> elements that have the sub department choices 
-  // Screen dimensions for centering
+  // Screen dimensions for centering popover
   var myWidth = 0;
   var myHeight = 0;
   var myScroll = 0;
@@ -64,7 +64,7 @@
   ///                              * Methods *                               ///
   ////////////////////////////////////////////////////////////////////////////////
 
-
+  // Get screen dimensions
   function loadScreen() {
     if ( document.all ) {
       // IE
@@ -93,6 +93,7 @@
     }
   }
 
+  // Freeze window during popover
   function noScroll( e ) {
     return false;
   }
@@ -142,6 +143,7 @@
     return isValidName; // Either the (corrected) valid name, or false if not valid  
   }
 
+  // Show the popover for editing a course
   function showPopOver( surveyNumber, e ) {
     popClearErrorMessages( dgi( "edit_instructor" ) );
     loadScreen();
@@ -256,6 +258,7 @@
     dgi( 'screen' ).style.display = "block";
   }
 
+  // Save the new info from a course edit via the popover
   function saveEditCourse( survey_number, sel_ranks, sel_types, e ) {
 
     e = e || window.event;
@@ -319,11 +322,12 @@
               subdept = $( "input[name=subdept_" + survey_number + "]:checked" ).value;
             } else { // If there are no SubDepartments in this form, we still need to
               // updateSTDQ, to handle the case of missing course information that has now been filled in.              
-              subdept = dgi( "department" ).value;              
+              subdept = dgi( "department" ).value;
             }
             // Update the STD Q list on save
             updateSTDQFlex( survey_number, subdept );
-            break;         }
+            break;
+          }
         case "table":
           {
             if ( dgi( "subdeptSelector_" + survey_number ) ) {
@@ -372,6 +376,7 @@
     }
   }
 
+  // Append an error message to a dynamic popErrorList <ul>
   function popAddErrorMessage( fieldname, messageText, classType ) {
     // Add a new message to the calling object's error list <ul>
     var messageList = dgi( fieldname.id + "_messages" );
@@ -381,6 +386,7 @@
     return messageList.appendChild( msg );
   }
 
+  // Close the popover for editing course information - either Save or Cancel
   function hidePopOver( e ) {
 
     e = e || window.event;
@@ -404,7 +410,7 @@
     dgi( 'screen' ).style.display = "none";
   }
 
-  // Limit user input to alpha chars and the dash, space, comma, ampersand chars.
+  // Limit user input to alpha chars and the dash, space, ampersand chars.
   // CSS transforms this input to DISPLAY all UPPERCASE. The actual value is updated at validation.
   function inputAlpha( e ) {
     e = e || window.event;
@@ -421,8 +427,8 @@
   }
 
   // Clean up the input in case of bad user input
-  // CSS is used with text-transform: uppercase to set the appearance to uppercase; onblur, the value is changed to uppercase also
-
+  // CSS is used with text-transform: uppercase to set the _appearance_ to uppercase;
+  // onblur, the _value_ is changed to uppercase also
   function validateName( inputField ) {
 
     popClearErrorMessages( inputField );
@@ -492,6 +498,7 @@
 
   }
 
+  // Determine form submission actions, return page, &c.
   function submitForm( action, e ) {
     e = e || window.event;
     if ( e.preventDefault ) e.preventDefault();
@@ -524,6 +531,7 @@
     dgi( "srf" ).submit();
   }
 
+  // Move to the add courses page, but save changes first via submit
   function submitAddCourses( e ) {
     e = e || window.event;
     if ( e.preventDefault ) e.preventDefault();
@@ -616,7 +624,7 @@
     }
   }
 
-  // For the Flexbox page with radio groups
+  // For the Flexbox page with radio groups - updates the appropriate STDQs to display
   function updateSTDQFlex( survey_number, subdept ) { // subdept param should be a String
     // Re-type as RegExp, and add the '|all' to cover stdq choices that are fit for all subdepartments
     subdept = new RegExp( subdept + '|all', 'i' );
@@ -659,7 +667,7 @@
   }
 
   //Table page with <select> menus
-  // This function only changes the Sub Department variables. Then it calls updateSTDQFlex.
+  // This function only changes the Sub Department variables. Then it calls updateSTDQSelect.
   function selectSubDepartment( e ) {
     e = e || window.event;
     if ( e.preventDefault ) e.preventDefault();
@@ -669,7 +677,7 @@
     updateSTDQSelect( survey_number, subdept );
   }
 
-  // For the Table page with <select> elements
+  // For the Table page with <select> elements - - updates the appropriate STDQs to display
   function updateSTDQSelect( survey_number, subdept ) {
     // Re-type as RegExp, and add the '|all' to cover stdq choices that are fit for all subdepartments
     subdept = RegExp( subdept + "|all", "i" );
@@ -700,8 +708,8 @@
     // and will also trigger the corresponding error message prompting to fill in the missing information.
 
     //First show/hide the appropriate individual questionnaires based on their 'data-esci' attributes
-      // We go through the <options> list in reverse, since each removal would dynamically adjust
-      // the size, and hence the positioning of the remaining elements. Going from the reverse end makes this not a problem.
+    // We go through the <options> list in reverse, since each removal would dynamically adjust
+    // the size, and hence the positioning of the remaining elements. Going from the reverse end makes this not a problem.
     for ( var i = stdqOptions.length - 1; i >= 0; --i ) {
       stdqDept = stdqOptions[ i ].dataset.esciDepartment;
       stdqRank = stdqOptions[ i ].dataset.esciRank;
@@ -716,7 +724,7 @@
         // If the <option> now being removed was previously selected, reset the selectedIndex back to zero.
         if ( stdqOptions[ i ].selected ) {
           newSTDQSelect.selectedIndex = 0;
-        }        
+        }
         stdqOptions.remove( i );
       }
     }
@@ -727,14 +735,14 @@
     // Finally replace the old <select> with the new
     oldSTDQSelect.parentNode.replaceChild( newSTDQSelect, oldSTDQSelect );
     // and make it visible
-    newSTDQSelect.removeAttribute('hidden');
+    newSTDQSelect.removeAttribute( 'hidden' );
     //newSTDQSelect.hidden = false;
   }
 
-  // Clones the 'template' <div> with children; renames the variables appropriately;
-  // and appends it to new course list container.
-  // We might consider forcing the previous add courses to be valid before allowing a clone.
-  // This is not implemented right now. - 8/22/14
+  // Clones the 'template' <div> with children for adding a new course;
+  // renames the variables appropriately, and appends it to the new course list container.
+  // We might consider forcing the previous add courses to be valid before allowing a clone....
+  // But this is not implemented right now. - 9/12/14
   function addNewCourse( e ) {
     e = e || window.event;
     if ( e.preventDefault ) {
@@ -802,7 +810,7 @@
     }
   }
 
-  // IE 8 and older compatibility
+  // IE 8 and older compatibility for use of .bind with functions, Event Handlers
   if ( !Function.prototype.bind ) {
     Function.prototype.bind = function( oThis ) {
       if ( typeof this !== "function" ) {
@@ -836,6 +844,10 @@
   ///////////////////////////////////////////////////////////////////////////////
 
   var _page_type = dgi( "body" ).dataset.pageName;
+  // Determines the outline level logic to apply to the current page.
+  // Mostly this is needed to modify the Event Handling logic.
+  // I.e., which page are we looking at? Uses the data-* elements in the <body>
+  // of the HTML page to make the identification
   switch ( _page_type ) {
     case "List Surveys Flex":
       {
@@ -857,7 +869,7 @@
         }
 
         ////////////////////////////////////////////////////////////////////////////////
-        // These 4 listeners are OK to remain through the life of the page.
+        // These 4 listeners on the popover name field are OK to remain through the life of the page.
         if ( dgi( "edit_instructor" ) ) {
           dgi( "edit_instructor" ).addEventListener( 'keypress', inputAlpha );
           dgi( "edit_instructor" ).addEventListener( 'blur', setInput, false );
@@ -881,7 +893,7 @@
 
         break;
       }
-      // Some of he event handling logic is different on the Table formatted version of the page
+      // Some of the event handling logic is different on the Table formatted version of the page
     case "List Surveys Table":
       {
         // Try to redirect to Flex-box view at widths < 900px.
@@ -890,12 +902,12 @@
         if ( dgi( "srf" ) ) {
           dgi( "srf" ).addEventListener( 'submit', submitForm.bind( dgi( "srf" ), "Submit" ) );
           loadScreen();
-          if (myWidth < 900) {            
-            if (document.createEvent) {
-              var evt = document.createEvent("Event");
-              evt.initEvent("submit",false,false);
+          if ( myWidth < 900 ) {
+            if ( document.createEvent ) {
+              var evt = document.createEvent( "Event" );
+              evt.initEvent( "submit", false, false );
             }
-            submitForm("Switch Flex", evt);
+            submitForm( "Switch Flex", evt );
           }
         }
         if ( dgi( "add_submit" ) ) {
@@ -903,7 +915,7 @@
         }
         if ( dgi( "switch_display" ) ) {
           dgi( "switch_display" ).addEventListener( 'click', submitForm.bind( dgi( "srf" ), "Switch Flex" ) );
-        }        
+        }
 
         // Event handlers for the <a>:"Edit Course Information" elements.
         // Survey Number bound as argument; second  parameter should be automatically passed as the Event by the browser.
@@ -912,7 +924,7 @@
         }
 
         ////////////////////////////////////////////////////////////////////////////////
-        // These 4 listeners are OK to remain through the life of the page.
+        // These 4 listeners on the popover name field are OK to remain through the life of the page.
         if ( dgi( "edit_instructor" ) ) {
           dgi( "edit_instructor" ).addEventListener( 'keypress', inputAlpha );
           dgi( "edit_instructor" ).addEventListener( 'blur', setInput, false );
@@ -933,6 +945,7 @@
 
     case "Submit Surveys":
       {
+        // Nothing special on the Submission page...(yet). No dynamic Event Handlers, etc.
         break;
       }
 
@@ -983,32 +996,34 @@
 
   ////////////////////////////////////////////////////////////////////////////////
   ////////// Common to all pages //////////
-  // First check what to display, if there is an errror message
+  // First check what to display, if there is an errror message, hide the regular content
   var errMsg = dgi( "error_text" );
   // If there is no error to report, hide the error block
   errMsg.textContent = errMsg.textContent.trim(); // Kill extra HTML-source whitespace
   if ( errMsg.textContent === undefined || errMsg.textContent === "" ) {
     //dgi( "error_msg" ).hidden = true;
-    dgi( "error_msg" ).setAttribute('hidden', true);
+    dgi( "error_msg" ).setAttribute( 'hidden', true );
   } // Else hide the other elements
   else {
-    dgi( "error_msg" ).setAttribute('hidden', false);
+    dgi( "error_msg" ).setAttribute( 'hidden', false );
     if ( dgi( "error_msg" ) ) dgi( "error_msg" ).style.display = "block";
-    if ( dgi( "heading" ) ){
-      dgi( "heading" ).setAttribute('hidden', true);
+    if ( dgi( "heading" ) ) {
+      dgi( "heading" ).setAttribute( 'hidden', true );
       //dgi( "heading" ).hidden = true;
     }
-    if ( dgi( "intro" ) ){
-      dgi( "intro" ).setAttribute('hidden', true);
+    if ( dgi( "intro" ) ) {
+      dgi( "intro" ).setAttribute( 'hidden', true );
       //dgi( "intro" ).hidden = true;
     }
-    if ( dgi( "list" ) ){
-      dgi( "list" ).setAttribute('hidden', true);
+    if ( dgi( "list" ) ) {
+      dgi( "list" ).setAttribute( 'hidden', true );
       //dgi( "list" ).hidden = true;
-    }    
+    }
   }
 
   // Upon page load, add fadeout class for any '.valid' elements.
+  // This is done here, since it relies on a transition effect, which needs a
+  // change of style properties to trigger correctly.
   forEach.call( $( '.valid', true ), function( node ) {
     node.classList.add( 'fadeout' );
   } );
@@ -1017,5 +1032,4 @@
 } )( window, document );
 // END: self-executing function on page load
 ///////////////////////////////////////////////////////////////////////////////
-
-
+                                                         
