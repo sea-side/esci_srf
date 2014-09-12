@@ -52,7 +52,8 @@
 
   <div id="content">
     <div id="heading">
-      <h1 class="testing">TESTING SITE</h1>
+      <h1 class="id-banner"><img src="./images/id-banner.png" class="id-banner"></h1>
+      <h2>ESCI Survey Request List</h2>
       <h3 class="ghosted">For Academic Quarter: <!--4DTEXT vCurrentQuarter-->
       <br>
       <span class="department"><!--#4DTEXT vDeptTitle--></span></h3>

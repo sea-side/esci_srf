@@ -17,21 +17,23 @@
   </head>
  <body id="body" data-page-name="Submit Surveys">
   <nav id="nav" class="noprint navigation">
-   <h2>
+   <h2 class="noprint">
     ESCI Survey Request Administration
    </h2>
    <div id="nav_buttons" class="noprint">
-    <input type="button" class="centered" value="Return to home" onclick="location.href=&#39;http://db01.id.ucsb.edu:8019/&#39;"> <input type="button" value="Print" onclick="window.print()">
+    <button type="button" class="centered" onclick="location.href=&#39;http://db01.id.ucsb.edu:8019/&#39;">
+      Return to home
+    </button>
+    <button type="button" onclick="window.print()">Print</button>
    </div>
   </nav>
   <div id="content">
-   <div id="heading">
-    <h1 class="testing noprint">
-     TESTING SITE SUBMISSION PAGE
-    </h1>
+   <div id="heading" class="noprint">
+    <h1 class="id-banner"><img src="./images/id-banner.png" class="id-banner"></h1>
+    <h1>ESCI Survey Request Submissions</h1>
    </div>
    <div id="error_msg" class="noprint error_list">
-    <p id="error_text" class="noprint">
+    <p id="error_text">
      <!--#4DHTML vWEBErrMsg-->
     </p>
    </div>
@@ -44,6 +46,7 @@
   </div>
   <div id="footer" class="yesprint"></div>
   <script src="./scripts/dataset.js"></script>
-  </script> <script src="./scripts/main.js"></script>
+  <script src="./scripts/main.js"></script>
  </body>
 </html>
+

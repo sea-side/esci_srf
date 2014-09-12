@@ -29,6 +29,16 @@ h1
   text-align:center;
   text-transform:uppercase;
 }
+.id-banner
+{
+  height:108px;  
+  padding:0;
+  background-color:#34524E;
+}
+h1.id-banner
+{
+  margin-top:50px;
+}
 h2
 {
   font-family:"Gill Sans","Trebuchet MS", sans-serif;
@@ -72,6 +82,7 @@ nav#nav
   display:inline-block;
   background-color:#cdc;
   width:100%;
+  height: 50px;
 }
 nav > h2
 {
@@ -194,12 +205,19 @@ nav input, nav button
   margin:0 3px;
   content:'\25c6';
 }
+thead
+{
+  display:table-header-group;
+}
+tbody
+{
+  display:table-row-group;
+}
 .course_list thead tr
 {
-  line-height:1em;
   vertical-align:baseline;
 }
-.course_list tbody tr
+.course_list tr
 {
   line-height:1em;
 }
@@ -926,10 +944,6 @@ input.fixed
 }
 /* * * * * * * * * * * * * * * * * * * * END - Common Auxiliary Elements * * * * * * * * * * * * * * * * * * */
 /* Wider screens */
-#content
-{
-  margin-top:4em;
-}
 .navigation {
   display:-webkit-box;
   display:-moz-box;
@@ -998,4 +1012,90 @@ input.fixed
     color:#000 !important;
     background-color:transparent !important;
   }
+  table#srf_submission
+  {
+    table-layout: fixed;
+    border-collapse: collapse;
+  }
+  table#srf_submission thead th
+  {    
+    border: 2px solid black;
+    margin-bottom:3px;
+  }
+  table#srf_submission tbody > tr > td:nth-child(2)
+  /*Questionnaire*/
+  {
+    text-align: left;
+  }
+  table#srf_submission tbody > tr > td:nth-child(3)
+  /*Instructor*/
+  {
+    text-align: left;
+  }
+  table#srf_submission tbody > tr > td:nth-child(9)
+  /*Day Time Location*/
+  {
+    white-space: pre-line;
+    text-align: left;
+  }
+  table#srf_submission tbody td
+  {
+    overflow:visible;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    word-break: normal;
+    border: 1px solid black !important;    
+  }
+  table#srf_submission th.col-edit
+  {
+    width:0;
+  }
+  
+  table#srf_submission th.col-subdept
+  {
+    width:6%;
+  }
+  table#srf_submission th.col-stdq
+  {
+    width:16%;
+    text-align: left;
+  }
+  table#srf_submission th.col-instructor
+  {
+    width:12%;    
+  }
+  table#srf_submission th.col-rank-narrow
+  {
+    width:4%;
+  }
+  table#srf_submission th.col-course-wide
+  {
+    width:13%;
+  }
+  table#srf_submission th.col-type
+  {
+    width:4%;    
+  }
+  table#srf_submission th.col-title
+  {
+    width:16%;
+  }
+  table#srf_submission th.col-ocr
+  {
+    width:5%;
+  }
+  table#srf_submission th.col-dtl
+  {
+    width:19%;
+  }
+  table#srf_submission th.col-enrollment
+  {
+    width:5%;
+  }
 }
+
+
+
+    
+  
+              

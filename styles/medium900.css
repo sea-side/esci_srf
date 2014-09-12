@@ -1,114 +1,115 @@
 /* Medium screens */
-  .navigation
-  {
-    /* When on medium sized screens, we center it by evenly distributing empty space around items */
-            justify-content: space-between;
-    -webkit-justify-content: space-between;
-    font-size: .9em;
-  }
-  nav > h2 {
-    letter-spacing: 2px;
-    font-weight: 500;    
-    left:10px;
-    top:10px;    
-  }
-  div#nav_buttons
-  {
-    width:60%;
-  }
-  div#nav_buttons > input, div#nav_buttons > button
-  {
-    margin-right:10px;
-  }
-  .instructions
-  {    
-    width: 80%;
-    left: 10%;
-    padding: 0 1em;
-    border-radius: 2em;
-  }
-  .instructions > ul
-  {
-    padding-bottom: 3px;
-    padding-left:20px;
-    -webkit-padding-start: 20ox;
-    list-style: outside;
-  }
-  h3
-  {
-    border-radius:10px;
-    border-width:2px;
-    font-size:1em;
-    overflow-wrap:break-word;
-    word-wrap:break-word;
-    left:10%;
-    letter-spacing:4px;
-    text-align:center;
-    text-transform:capitalize;
-    width:80%;
-  }
-  .course_info li.link_editCourse
-  {
-    min-width: 133px;
-    min-height: 55px;
-  }
-  .popover
-  {
-    display:none;
-            transition: display 0.5s ease-in-out 0s;
-    -webkit-transition: display 0.5s ease-in-out 0s;
-    border-style: none;
-    position:absolute;
-    z-index: 3;
-    padding: 0;
-    width:75%;
-    height:66%;
-    font-size: 1.25em;
-  }
-  /*.link_editCourse*/
-  /*{*/
-  /*  display:block;*/
-  /*  flex: 1 1 100% !important;*/
-  /*  overflow:hidden;*/
-  /*  text-overflow:"";*/
-  /*}*/
-  a.link_editCourse
-  {
-    font-size:initial;
-    padding:10px 1em;
-  }
-  #edit_course
-  {
-    font-size: 1.25em;
-    padding: .8em;
-  }
-    
-  .popMessageList li
-  {
-    border-radius: 0.4em;
-  }
-  #timestamp
-  {
-    font-size:0.9em;
-    letter-spacing:normal;
-    line-height: 100%;
-  }
-  #timestamp > br
-  {
-    margin-bottom:8px;
-  }
-  /* Try to force Flex-box on smaller screens. Table view doesn't work well at smaller widths */
-  nav#nav button#switch_display
-  {
-    display:none;
-  }
-@media all and (max-width: 768px) {
+h1.id-banner, img.id-banner
+{
+  display:none;  
+}
+#content
+{
+  margin-top:5em;
+}
+.navigation
+{
+  /* When on medium sized screens, we center it by evenly distributing empty space around items */
+          justify-content:space-between;
+  -webkit-justify-content:space-between;
+  font-size:.9em;
+}
+nav > h2 {
+  letter-spacing:2px;
+  font-weight:500;    
+  left:10px;
+  top:10px;    
+}
+div#nav_buttons
+{
+  width:60%;
+}
+div#nav_buttons > input, div#nav_buttons > button
+{
+  margin-right:10px;
+}
+.instructions
+{    
+  width:80%;
+  left:10%;
+  padding:0 1em;
+  border-radius:2em;
+}
+.instructions > ul
+{
+  padding-bottom:3px;
+  padding-left:20px;
+  -webkit-padding-start:20ox;
+  list-style:outside;
+}
+h3
+{
+  border-radius:10px;
+  border-width:2px;
+  font-size:1em;
+  overflow-wrap:break-word;
+  word-wrap:break-word;
+  left:10%;
+  letter-spacing:4px;
+  text-align:center;
+  text-transform:capitalize;
+  width:80%;
+}
+.course_info li.link_editCourse
+{
+  min-width:133px;
+  min-height:55px;
+}
+.popover
+{
+  display:none;
+          transition:display 0.5s ease-in-out 0s;
+  -webkit-transition:display 0.5s ease-in-out 0s;
+  border-style:none;
+  position:absolute;
+  z-index:3;
+  padding:0;
+  width:75%;
+  height:66%;
+  font-size:1.25em;
+}
+a.link_editCourse
+{
+  font-size:initial;
+  padding:10px 1em;
+}
+#edit_course
+{
+  font-size:1.25em;
+  padding:.8em;
+}
+  
+.popMessageList li
+{
+  border-radius:0.4em;
+}
+#timestamp
+{
+  font-size:0.9em;
+  letter-spacing:normal;
+  line-height:100%;
+}
+#timestamp > br
+{
+  margin-bottom:8px;
+}
+/* Try to force Flex-box on smaller screens. Table view doesn't work well at smaller widths */
+nav#nav button#switch_display
+{
+  display:none;
+}
+@media all and (max-width:768px) {
   div#nav_buttons *
   {
-    font-size: 0.7em;
-    letter-spacing: -0.5px;
+    font-size:0.7em;
+    letter-spacing:-0.5px;
     margin-right:2px;
-    border-width: 0px;
+    border-width:0px;
   }
 }
 
